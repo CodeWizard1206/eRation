@@ -10,6 +10,10 @@ class UserModel {
   String? profile;
   String? gender;
   DateTime? dob;
+  String? address;
+  String? area;
+  String? city;
+  String? state;
 
   UserModel({
     this.uid,
@@ -20,6 +24,10 @@ class UserModel {
     this.profile,
     this.gender,
     this.dob,
+    this.address,
+    this.area,
+    this.city,
+    this.state,
   });
 
   UserModel copyWith({
@@ -31,6 +39,10 @@ class UserModel {
     String? profile,
     String? gender,
     DateTime? dob,
+    String? address,
+    String? area,
+    String? city,
+    String? state,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -41,6 +53,10 @@ class UserModel {
       profile: profile ?? this.profile,
       gender: gender ?? this.gender,
       dob: dob ?? this.dob,
+      address: address ?? this.address,
+      area: area ?? this.area,
+      city: city ?? this.city,
+      state: state ?? this.state,
     );
   }
 
@@ -53,6 +69,10 @@ class UserModel {
       'profile': profile,
       'gender': gender,
       'dob': dob,
+      'address': address,
+      'area': area,
+      'city': city,
+      'state': state,
     };
   }
 
@@ -68,6 +88,10 @@ class UserModel {
       profile: map['profile'],
       gender: map['gender'],
       dob: map['dob'].toDate(),
+      address: map['address'],
+      area: map['area'],
+      city: map['city'],
+      state: map['state'],
     );
   }
 
@@ -81,6 +105,10 @@ class UserModel {
       profile: map['profile'],
       gender: map['gender'],
       dob: map['dob'].toDate(),
+      address: map['address'],
+      area: map['area'],
+      city: map['city'],
+      state: map['state'],
     );
   }
 
@@ -91,7 +119,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, name: $name, email: $email, pass: $pass, contact: $contact, profile: $profile, gender: $gender, dob: $dob)';
+    return 'UserModel(uid: $uid, name: $name, email: $email, pass: $pass, contact: $contact, profile: $profile, gender: $gender, dob: $dob, address: $address, area: $area, city: $city, state: $state)';
   }
 
   @override
@@ -106,7 +134,11 @@ class UserModel {
         other.contact == contact &&
         other.profile == profile &&
         other.gender == gender &&
-        other.dob == dob;
+        other.dob == dob &&
+        other.address == address &&
+        other.area == area &&
+        other.city == city &&
+        other.state == state;
   }
 
   @override
@@ -118,6 +150,10 @@ class UserModel {
         contact.hashCode ^
         profile.hashCode ^
         gender.hashCode ^
-        dob.hashCode;
+        dob.hashCode ^
+        address.hashCode ^
+        area.hashCode ^
+        city.hashCode ^
+        state.hashCode;
   }
 }
