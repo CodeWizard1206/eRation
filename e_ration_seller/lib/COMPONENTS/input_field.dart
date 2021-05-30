@@ -7,6 +7,7 @@ class InputField extends StatelessWidget {
   final String? title;
   final bool visibilityToggle;
   final int? maxLines;
+  final TextInputType? keyboardType;
   const InputField({
     Key? key,
     this.controller,
@@ -15,6 +16,7 @@ class InputField extends StatelessWidget {
     this.visibilityToggle = false,
     this.title,
     this.maxLines = 1,
+    this.keyboardType = TextInputType.text,
   }) : super(key: key);
 
   @override
@@ -25,6 +27,7 @@ class InputField extends StatelessWidget {
       obscureText: this.obscureText,
       minLines: 1,
       maxLines: this.maxLines,
+      keyboardType: this.keyboardType,
       cursorColor: Theme.of(context).primaryColorLight,
       decoration: InputDecoration(
         hintText: this.title,

@@ -59,6 +59,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     controller: _name,
                     title: "Name",
                   ),
+                  InputField(
+                    controller: _email,
+                    title: "Email",
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  InputField(
+                    controller: _contact,
+                    title: "Contact",
+                    keyboardType: TextInputType.phone,
+                  ),
+                  InputField(
+                    controller: _contact,
+                    title: "Contact",
+                    keyboardType: TextInputType.phone,
+                  ),
+                  InputField(
+                    controller: _address,
+                    title: "Address",
+                    maxLines: 5,
+                  ),
+                  InputField(
+                    controller: _area,
+                    title: "Area",
+                  ),
+                  InputField(
+                    controller: _city,
+                    title: "City",
+                  ),
+                  InputField(
+                    controller: _state,
+                    title: "State",
+                  ),
                 ],
               ),
             ),
