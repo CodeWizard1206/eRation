@@ -62,7 +62,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           RawMaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, 'signUp');
+                            },
                             splashColor: Theme.of(context)
                                 .primaryColorLight
                                 .withOpacity(0.3),
