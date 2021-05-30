@@ -45,11 +45,81 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: SafeArea(
         child: ListView(
           children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 18.0),
+              child: Stack(
+                alignment: Alignment.centerLeft,
+                children: [
+                  Container(
+                    width: double.maxFinite,
+                    child: Text(
+                      'SignUp',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Product Sans',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 36.0,
+                      ),
+                    ),
+                  ),
+                  RawMaterialButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    fillColor: Theme.of(context).primaryColorDark,
+                    splashColor: Theme.of(context).primaryColorLight,
+                    shape: CircleBorder(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Icon(
+                        Icons.keyboard_arrow_left,
+                        color: Colors.white,
+                        size: 38,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Container(
               width: MediaQuery.of(context).size.width,
-              child: CircleAvatar(
-                radius: (MediaQuery.of(context).size.width * 0.3),
-                backgroundImage: AssetImage('assets/images/user.png'),
+              margin: const EdgeInsets.all(20),
+              child: Center(
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(120),
+                        border: Border.all(
+                            color: Theme.of(context).primaryColorLight,
+                            width: 2),
+                      ),
+                      padding: const EdgeInsets.all(3.0),
+                      child: CircleAvatar(
+                        radius: (MediaQuery.of(context).size.width * 0.3),
+                        backgroundColor: Colors.transparent,
+                        backgroundImage:
+                            null, //AssetImage('assets/images/user.png'),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(120),
+                          child: Image.asset(
+                            'assets/images/user.png',
+                            scale: 1.0,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                    ),
+                    FloatingActionButton(
+                      onPressed: () {},
+                      child: Icon(
+                        Icons.camera_alt,
+                        size: 30,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Padding(
@@ -108,6 +178,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
             ),
+            Container(
+              width: double.maxFinite,
+              margin: const EdgeInsets.all(12.0),
+              child: Center(
+                child: RawMaterialButton(
+                  onPressed: () {},
+                  fillColor: Theme.of(context).primaryColorDark,
+                  splashColor: Theme.of(context).primaryColorLight,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10.0,
+                      horizontal: 22.0,
+                    ),
+                    child: Text(
+                      'Sign Me Up!',
+                      style: TextStyle(
+                        fontFamily: 'Product Sans',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 28,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.0),
           ],
         ),
       ),

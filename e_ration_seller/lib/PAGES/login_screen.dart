@@ -47,7 +47,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       focusNode: _userFocus,
                       title: "Email",
                     ),
-                    SizedBox(height: 10),
                     InputField(
                       controller: _passController,
                       focusNode: _passFocus,
@@ -63,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           RawMaterialButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, 'signUp');
+                              Navigator.pushNamed(context, '/signUp');
                             },
                             splashColor: Theme.of(context)
                                 .primaryColorLight

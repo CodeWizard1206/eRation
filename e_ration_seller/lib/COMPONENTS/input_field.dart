@@ -91,48 +91,52 @@ class _InputFieldState extends State<InputField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: this.widget.controller,
-      focusNode: this.widget.focusNode,
-      obscureText: this.obscureText,
-      maxLines: this.widget.maxLines,
-      keyboardType: this.widget.keyboardType,
-      cursorColor: Theme.of(context).primaryColorLight,
-      decoration: InputDecoration(
-        hintText: this.widget.title,
-        hintStyle: TextStyle(
-          color: Theme.of(context).primaryColorLight,
-        ),
-        labelText: this.widget.title,
-        labelStyle: TextStyle(
-          color: Theme.of(context).primaryColorDark,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          borderSide: BorderSide(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: TextFormField(
+        controller: this.widget.controller,
+        focusNode: this.widget.focusNode,
+        obscureText: this.obscureText,
+        minLines: 1,
+        maxLines: this.widget.maxLines,
+        keyboardType: this.widget.keyboardType,
+        cursorColor: Theme.of(context).primaryColorLight,
+        decoration: InputDecoration(
+          hintText: this.widget.title,
+          hintStyle: TextStyle(
             color: Theme.of(context).primaryColorLight,
-            width: 0.7,
           ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          borderSide: BorderSide(
-            color: Theme.of(context).primaryColorLight,
-            width: 1.5,
+          labelText: this.widget.title,
+          labelStyle: TextStyle(
+            color: Theme.of(context).primaryColorDark,
           ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide(
+              color: Theme.of(context).primaryColorLight,
+              width: 0.7,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide(
+              color: Theme.of(context).primaryColorLight,
+              width: 1.5,
+            ),
+          ),
+          suffix: this.widget.visibilityToggle
+              ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      this.obscureText = !this.obscureText;
+                    });
+                  },
+                  child: Icon(this.obscureText
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined),
+                )
+              : null,
         ),
-        suffix: this.widget.visibilityToggle
-            ? GestureDetector(
-                onTap: () {
-                  setState(() {
-                    this.obscureText = !this.obscureText;
-                  });
-                },
-                child: Icon(this.widget.obscureText
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined),
-              )
-            : null,
       ),
     );
   }
