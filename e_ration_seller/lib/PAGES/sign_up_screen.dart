@@ -13,6 +13,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController? _email;
   TextEditingController? _contact;
   TextEditingController? _pass;
+  TextEditingController? _passConfirm;
   TextEditingController? _address;
   TextEditingController? _area;
   TextEditingController? _city;
@@ -27,6 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _email = TextEditingController();
     _contact = TextEditingController();
     _pass = TextEditingController();
+    _passConfirm = TextEditingController();
     _address = TextEditingController();
     _area = TextEditingController();
     _city = TextEditingController();
@@ -90,6 +92,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   InputField(
                     controller: _state,
                     title: "State",
+                  ),
+                  InputField(
+                    controller: _pass,
+                    title: "Password",
+                    obscureText: true,
+                    visibilityToggle: true,
+                  ),
+                  InputField(
+                    controller: _passConfirm,
+                    title: "Confirm Password",
+                    obscureText: true,
+                    visibilityToggle: true,
                   ),
                 ],
               ),
