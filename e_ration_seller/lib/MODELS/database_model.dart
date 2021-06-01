@@ -21,6 +21,15 @@ class DatabaseManager {
     _cache.setString('cred', Constant.getUser.toJson());
   }
 
+  void logoutUser() async {
+    SharedPreferences _cache = await SharedPreferences.getInstance();
+    _cache.clear();
+    _cache.setBool('loggedIn', false);
+    Constant.setUser = UserModel();
+    Constant.isLoggedIn = false;
+    _auth.signOut();
+  }
+
   Future<bool> getLoginCred(String email, String pass) async {
     try {
       UserCredential _userCred =
