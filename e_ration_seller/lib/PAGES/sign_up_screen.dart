@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:e_ration_seller/COMPONENTS/async_loader.dart';
 import 'package:e_ration_seller/COMPONENTS/drop_down.dart';
 import 'package:e_ration_seller/COMPONENTS/input_field.dart';
 import 'package:e_ration_seller/MODELS/contants.dart';
@@ -237,23 +238,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: ModalProgressHUD(
         inAsyncCall: this._isLoading,
         opacity: 0.8,
-        progressIndicator: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircularProgressIndicator(
-              valueColor:
-                  AlwaysStoppedAnimation(Theme.of(context).primaryColorLight),
-            ),
-            SizedBox(height: 12.0),
-            Text(
-              'Please Wait...',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-              ),
-            )
-          ],
-        ),
+        progressIndicator: AsyncLoader(),
         child: SafeArea(
           child: ListView(
             children: [
@@ -268,7 +253,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         'SignUp',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontFamily: 'Product Sans',
                           fontWeight: FontWeight.bold,
                           fontSize: 36.0,
                         ),
@@ -460,7 +444,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Text(
                           'Sign Me Up!',
                           style: TextStyle(
-                            fontFamily: 'Product Sans',
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                             fontSize: 28,

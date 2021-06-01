@@ -40,11 +40,6 @@ class MyApp extends StatelessWidget {
             foregroundColor: Colors.white,
             splashColor: Color(0xFFFFCA28),
           ),
-          textTheme: TextTheme(
-            bodyText1: TextStyle(
-              fontFamily: 'Product Sans',
-            ),
-          ),
           fontFamily: 'Product Sans',
           primarySwatch: Colors.grey,
           shadowColor: Color(0xFFFFCA28)),
