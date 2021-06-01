@@ -63,17 +63,23 @@ class InputField extends StatefulWidget {
   final bool obscureText;
   final String? title;
   final bool visibilityToggle;
+  final bool dateToggle;
+  final bool enabled;
   final int? maxLines;
   final TextInputType? keyboardType;
+  final TextCapitalization textCapitalization;
   InputField({
     Key? key,
     this.controller,
     this.focusNode,
     this.obscureText = false,
     this.visibilityToggle = false,
+    this.dateToggle = false,
+    this.enabled = true,
     this.title,
     this.maxLines = 1,
     this.keyboardType = TextInputType.text,
+    this.textCapitalization = TextCapitalization.none,
   }) : super(key: key);
 
   @override
@@ -101,6 +107,8 @@ class _InputFieldState extends State<InputField> {
         maxLines: this.widget.maxLines,
         keyboardType: this.widget.keyboardType,
         cursorColor: Theme.of(context).primaryColorLight,
+        textCapitalization: this.widget.textCapitalization,
+        enabled: this.widget.dateToggle ? false : this.widget.enabled,
         decoration: InputDecoration(
           hintText: this.widget.title,
           hintStyle: TextStyle(
@@ -111,6 +119,13 @@ class _InputFieldState extends State<InputField> {
             color: Theme.of(context).primaryColorDark,
           ),
           enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide(
+              color: Theme.of(context).primaryColorLight,
+              width: 0.7,
+            ),
+          ),
+          disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20.0),
             borderSide: BorderSide(
               color: Theme.of(context).primaryColorLight,
@@ -135,7 +150,12 @@ class _InputFieldState extends State<InputField> {
                       ? Icons.visibility_outlined
                       : Icons.visibility_off_outlined),
                 )
-              : null,
+              : this.widget.dateToggle
+                  ? Icon(
+                      Icons.calendar_today_rounded,
+                      color: Colors.black87,
+                    )
+                  : null,
         ),
       ),
     );
