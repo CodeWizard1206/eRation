@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:e_ration_seller/COMPONENTS/drop_down.dart';
 import 'package:e_ration_seller/COMPONENTS/input_field.dart';
+import 'package:e_ration_seller/MODELS/contants.dart';
 import 'package:e_ration_seller/MODELS/database_model.dart';
 import 'package:e_ration_seller/MODELS/user_model.dart';
 import 'package:flutter/material.dart';
@@ -154,58 +155,74 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _area!.text.isNotEmpty &&
         _city!.text.isNotEmpty &&
         _state!.text.isNotEmpty) {
-      if (_pass!.text.length >= 8) {
-        if (_pass!.text == _passConfirm!.text) {
-          setState(() {
-            this._isLoading = true;
-          });
-          UserModel _user = UserModel(
-            name: _name!.text,
-            email: _email!.text,
-            contact: _contact!.text,
-            pass: _pass!.text,
-            gender: _gender!.text,
-            address: _address!.text,
-            city: _city!.text,
-            area: _area!.text,
-            state: _state!.text,
-            dob: _dob,
-          );
-
-          DatabaseManager _db = DatabaseManager.getInstance;
-          bool _result = await _db.signUp(_user, _image);
-
-          setState(() {
-            this._isLoading = false;
-          });
-          if (_result) {
-            Scaffold.of(context).showSnackBar(
-              SnackBar(
-                content: Text("Signed Up Successfully"),
-              ),
+      if (DateTime.now().difference(_dob!).inDays > (365 * 18)) {
+        if (_pass!.text.length >= 8) {
+          if (_pass!.text == _passConfirm!.text) {
+            setState(() {
+              this._isLoading = true;
+            });
+            UserModel _user = UserModel(
+              name: _name!.text,
+              email: _email!.text,
+              contact: _contact!.text,
+              pass: _pass!.text,
+              gender: _gender!.text,
+              address: _address!.text,
+              city: _city!.text,
+              area: _area!.text,
+              state: _state!.text,
+              dob: _dob,
             );
+
+            DatabaseManager _db = DatabaseManager.getInstance;
+            bool _result = await _db.signUp(_user, _image);
+
+            setState(() {
+              this._isLoading = false;
+            });
+            if (_result) {
+              Constant.isLoggedIn = true;
+              Navigator.popUntil(context, ModalRoute.withName('/'));
+              Navigator.pushNamed(context, '/');
+              // Scaffold.of(context).showSnackBar(
+              //   SnackBar(
+              //     content: Text("Signed Up Successfully"),
+              //   ),
+              // );
+            } else {
+              // ignore: deprecated_member_use
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Error Occured"),
+                ),
+              );
+            }
           } else {
+            // ignore: deprecated_member_use
             Scaffold.of(context).showSnackBar(
               SnackBar(
-                content: Text("Error Occured"),
+                content: Text("Password Mismatched!!!"),
               ),
             );
           }
         } else {
+          // ignore: deprecated_member_use
           Scaffold.of(context).showSnackBar(
             SnackBar(
-              content: Text("Password Mismatched!!!"),
+              content: Text("Password should be atleast 8 Characters Long!!!"),
             ),
           );
         }
       } else {
+        // ignore: deprecated_member_use
         Scaffold.of(context).showSnackBar(
           SnackBar(
-            content: Text("Password should be atleast 8 Characters Long!!!"),
+            content: Text("Age should be atleast 18 or above!!!"),
           ),
         );
       }
     } else {
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text("All Fields are Required!!!"),
@@ -385,6 +402,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     InputField(
                       controller: _area,
                       title: "Area",
+                      textCapitalization: TextCapitalization.characters,
                     ),
                     Row(
                       children: [

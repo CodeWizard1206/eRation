@@ -76,22 +76,27 @@ class UserModel {
     };
   }
 
-  factory UserModel.fromDoc(DocumentSnapshot doc) {
-    Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
+  Map<String, dynamic> toCred() {
+    return {
+      'email': email,
+      'pass': pass,
+    };
+  }
 
+  factory UserModel.fromDoc(DocumentSnapshot doc) {
     return UserModel(
-      uid: map['uid'],
-      name: map['name'],
-      email: map['email'],
-      pass: map['pass'],
-      contact: map['contact'],
-      profile: map['profile'],
-      gender: map['gender'],
-      dob: map['dob'].toDate(),
-      address: map['address'],
-      area: map['area'],
-      city: map['city'],
-      state: map['state'],
+      uid: doc.id,
+      name: doc.get('name'),
+      email: doc.get('email'),
+      pass: doc.get('pass'),
+      contact: doc.get('contact'),
+      profile: doc.get('profile'),
+      gender: doc.get('gender'),
+      dob: doc.get('dob').toDate(),
+      address: doc.get('address'),
+      area: doc.get('area'),
+      city: doc.get('city'),
+      state: doc.get('state'),
     );
   }
 
@@ -112,7 +117,7 @@ class UserModel {
     );
   }
 
-  String toJson() => json.encode(toMap());
+  String toJson() => json.encode(toCred());
 
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(json.decode(source));

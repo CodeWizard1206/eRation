@@ -111,9 +111,9 @@ class _InputFieldState extends State<InputField> {
         enabled: this.widget.dateToggle ? false : this.widget.enabled,
         decoration: InputDecoration(
           hintText: this.widget.title,
-          hintStyle: TextStyle(
-            color: Theme.of(context).primaryColorLight,
-          ),
+          // hintStyle: TextStyle(
+          //   color: Theme.of(context).primaryColorLight,
+          // ),
           labelText: this.widget.title,
           labelStyle: TextStyle(
             color: Theme.of(context).primaryColorDark,
