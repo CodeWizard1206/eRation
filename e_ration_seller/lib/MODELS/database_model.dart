@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_ration_seller/MODELS/contants.dart';
 import 'package:e_ration_seller/MODELS/user_model.dart';
@@ -10,6 +12,12 @@ class DatabaseManager {
 
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  void _storeCache() async {
+    SharedPreferences _cache = await SharedPreferences.getInstance();
+    _cache.setBool('loggedIn', true);
+    _cache.setString('userData', Constant.getUser.toJson());
+  }
 
   Future<bool> getLoginCred(String email, String pass) async {
     try {
@@ -34,9 +42,15 @@ class DatabaseManager {
     }
   }
 
-  void _storeCache() async {
-    SharedPreferences _cache = await SharedPreferences.getInstance();
-    _cache.setBool('loggedIn', true);
-    _cache.setString('userData', Constant.getUser.toJson());
+  Future<bool> signUp(UserModel user, File? image) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: user.email.toString(), password: user.pass.toString());
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
   }
 }
