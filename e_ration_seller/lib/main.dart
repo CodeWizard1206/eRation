@@ -3,6 +3,8 @@ import 'package:e_ration_seller/MODELS/database_model.dart';
 import 'package:e_ration_seller/PAGES/dashboard.dart';
 import 'package:e_ration_seller/PAGES/login_screen.dart';
 import 'package:e_ration_seller/PAGES/manage_product.dart';
+import 'package:e_ration_seller/PAGES/orders.dart';
+import 'package:e_ration_seller/PAGES/queries.dart';
 import 'package:e_ration_seller/PAGES/sign_up_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +52,8 @@ class MyApp extends StatelessWidget {
         '/signUp': (context) => SignUpScreen(),
         '/dashboard': (context) => Dashboard(),
         '/manage': (context) => ManageProduct(),
+        '/orders': (context) => Orders(),
+        '/queries': (context) => Queries(),
       },
     );
   }

@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
 
-class ManageProduct extends StatelessWidget {
-  const ManageProduct({Key? key}) : super(key: key);
+class Orders extends StatelessWidget {
+  const Orders({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80),
-        child: CustomAppBar(title: 'Products'),
+        child: CustomAppBar(title: 'Orders'),
       ),
-      drawer: AppDrawer(index: 1),
+      drawer: AppDrawer(index: 2),
       body: NoData(
-        message: 'No product to show!!!',
-        icon: FlutterIcons.store_mall_directory_mdi,
+        message: 'No queries to show!!!',
+        icon: FlutterIcons.shopping_bag_ent,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
