@@ -6,6 +6,7 @@ import 'package:e_ration_seller/PAGES/manage_product.dart';
 import 'package:e_ration_seller/PAGES/orders.dart';
 import 'package:e_ration_seller/PAGES/queries.dart';
 import 'package:e_ration_seller/PAGES/sign_up_screen.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,17 +36,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'E Ration Seller',
       theme: ThemeData(
-          primaryColorLight: Color(0xFFFFCA28),
-          primaryColorDark: Color(0xFFFFA000),
-          // scaffoldBackgroundColor: Color(0xFFFFA000),
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: Color(0xFFFFA000),
-            foregroundColor: Colors.white,
-            splashColor: Color(0xFFFFCA28),
-          ),
-          fontFamily: 'Product Sans',
-          primarySwatch: Colors.grey,
-          shadowColor: Color(0xFFFFCA28)),
+        primaryColorLight: Color(0xFFFFCA28),
+        primaryColorDark: Color(0xFFFFA000),
+        // scaffoldBackgroundColor: Color(0xFFFFA000),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFFFFA000),
+          foregroundColor: Colors.white,
+          splashColor: Color(0xFFFFCA28),
+        ),
+        fontFamily: 'Product Sans',
+        primarySwatch: Colors.grey,
+        shadowColor: Color(0xFFFFCA28),
+      ),
       routes: {
         '/': (context) => HomeRoute(),
         '/login': (context) => LoginScreen(),
@@ -55,6 +57,7 @@ class MyApp extends StatelessWidget {
         '/orders': (context) => Orders(),
         '/queries': (context) => Queries(),
       },
+      initialRoute: '/',
     );
   }
 }

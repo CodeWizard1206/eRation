@@ -46,18 +46,21 @@ class CustomAppBar extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(2.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Theme.of(context).primaryColorLight,
-                    width: 2,
+              Hero(
+                tag: 'ProfileViewer',
+                child: Container(
+                  padding: const EdgeInsets.all(2.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Theme.of(context).primaryColorLight,
+                      width: 2,
+                    ),
                   ),
-                ),
-                child: CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(
-                    Constant.getUser.profile.toString(),
+                  child: CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(
+                      Constant.getUser.profile.toString(),
+                    ),
                   ),
                 ),
               )
