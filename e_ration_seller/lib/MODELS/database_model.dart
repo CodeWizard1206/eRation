@@ -17,6 +17,8 @@ class DatabaseManager {
 
   final String _sellerDB = 'sellerDatabase';
   final String _reviewColl = 'userReviews';
+  final String _productDB = 'productDatabase';
+  final String _queriesColl = 'userQueries';
 
   //Store login data in cache for auto relogin.
   void _storeCache() async {
@@ -114,6 +116,29 @@ class DatabaseManager {
         .orderBy('timestamp')
         .snapshots()
         .map((event) => event.docs.map((e) => e['rating'] as int).toList());
+
+    return _return;
+  }
+
+  Stream<int> getProductsCount() {
+    Stream<int> _return = _firestore
+        .collection(_productDB)
+        .where('sellerUid', isEqualTo: Constant.getUser.uid)
+        .where('stockCount', isGreaterThan: 0)
+        .snapshots()
+        .map((event) => event.docs.length);
+
+    return _return;
+  }
+
+  Stream<int> getQueries() {
+    Stream<int> _return = _firestore
+        .collection(_sellerDB)
+        .doc(Constant.getUser.uid)
+        .collection(_queriesColl)
+        .where('answered', isEqualTo: true)
+        .snapshots()
+        .map((event) => event.docs.length);
 
     return _return;
   }

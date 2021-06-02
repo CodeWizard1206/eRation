@@ -1,7 +1,10 @@
 import 'package:e_ration_seller/COMPONENTS/app_bar.dart';
 import 'package:e_ration_seller/COMPONENTS/app_drawer.dart';
+import 'package:e_ration_seller/COMPONENTS/data_info_card.dart';
 import 'package:e_ration_seller/COMPONENTS/review_card.dart';
+import 'package:e_ration_seller/MODELS/database_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class Dashboard extends StatelessWidget {
   final int rating = 3;
@@ -18,6 +21,20 @@ class Dashboard extends StatelessWidget {
       body: ListView(
         children: [
           ReviewCard(),
+          Row(
+            children: [
+              DataInfoCard(
+                title: 'Prodcuts',
+                icon: FlutterIcons.shopping_cart_ent,
+                stream: DatabaseManager.getInstance.getProductsCount(),
+              ),
+              DataInfoCard(
+                title: 'Queries',
+                icon: FlutterIcons.chat_bubble_mdi,
+                stream: DatabaseManager.getInstance.getQueries(),
+              ),
+            ],
+          ),
         ],
       ),
     );

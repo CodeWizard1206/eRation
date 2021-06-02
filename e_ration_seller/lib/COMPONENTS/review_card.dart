@@ -16,7 +16,7 @@ class _ReviewCardState extends State<ReviewCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(8.0),
       child: StreamBuilder<List<int>>(
           stream: DatabaseManager.getInstance.getReviewDataStream(),
           builder: (context, snapshot) {
