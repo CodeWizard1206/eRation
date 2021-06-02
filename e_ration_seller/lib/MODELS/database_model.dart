@@ -142,4 +142,59 @@ class DatabaseManager {
 
     return _return;
   }
+
+  Future<void> deleteProfileImage() async {
+    try {
+      await _storage.ref('profileImages/${Constant.getUser.uid}.jpeg').delete();
+      await _firestore
+          .collection(_sellerDB)
+          .doc(Constant.getUser.uid)
+          .update({'profile': null});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<String> updateProfileImage(File image) async {
+    try {
+      UploadTask _task = _storage
+          .ref('profileImages/${Constant.getUser.uid}.jpeg')
+          .putFile(image);
+      await _task.whenComplete(() async {});
+      String _uri = await _storage
+          .ref('profileImages/${Constant.getUser.uid}.jpeg')
+          .getDownloadURL();
+
+      await _firestore
+          .collection(_sellerDB)
+          .doc(Constant.getUser.uid)
+          .update({'profile': _uri});
+
+      return _uri;
+    } catch (e) {
+      print(e.toString());
+      return 'none';
+    }
+  }
+
+  Future<bool> updateProfile(
+      UserModel user, bool updateEmail, bool updatePassword) async {
+    try {
+      if (updateEmail) {
+        await _auth.currentUser!.updateEmail(user.email.toString());
+      }
+      if (updatePassword) {
+        await _auth.currentUser!.updatePassword(user.pass.toString());
+      }
+
+      await _firestore.collection(_sellerDB).doc(user.uid).update(user.toMap());
+
+      Constant.setUser = user;
+      _storeCache();
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
 }

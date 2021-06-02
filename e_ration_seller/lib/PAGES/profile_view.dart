@@ -36,6 +36,8 @@ class _ProfileViewState extends State<ProfileView> {
 
   File? _image;
   bool? _isLoading;
+  bool? _isEditable;
+  String? _profileUri;
 
   @override
   void initState() {
@@ -63,11 +65,13 @@ class _ProfileViewState extends State<ProfileView> {
         DateFormat("dd MMM yy").format(Constant.getUser.dob!);
 
     _isLoading = false;
+    _isEditable = false;
+    _profileUri = Constant.getUser.profile;
 
     super.initState();
   }
 
-  Future<File?> _cropImage(String srcPath) async {
+  Future<void> _cropImage(String srcPath) async {
     File? croppedFile = await ImageCropper.cropImage(
         sourcePath: srcPath,
         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
@@ -82,7 +86,25 @@ class _ProfileViewState extends State<ProfileView> {
           title: 'Crop Image',
         ));
 
-    return croppedFile;
+    if (croppedFile != null) {
+      setState(() {
+        _isLoading = true;
+        _image = croppedFile;
+      });
+      String _uri =
+          await DatabaseManager.getInstance.updateProfileImage(_image!);
+      if (_uri != 'none') {
+        setState(() {
+          _profileUri = _uri;
+          Constant.getUser.profile = _uri;
+          _image = null;
+        });
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   Future _setImage(BuildContext context) async {
@@ -99,6 +121,20 @@ class _ProfileViewState extends State<ProfileView> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            (_profileUri != null)
+                ? ListTile(
+                    leading: Icon(Icons.close),
+                    title: Text("Remove Image"),
+                    onTap: () {
+                      DatabaseManager.getInstance.deleteProfileImage();
+                      setState(() {
+                        _profileUri = null;
+                        Constant.getUser.profile = null;
+                      });
+                      Navigator.of(_).pop();
+                    },
+                  )
+                : SizedBox(),
             ListTile(
               leading: Icon(Icons.camera_alt),
               title: Text("Take Picture"),
@@ -107,12 +143,7 @@ class _ProfileViewState extends State<ProfileView> {
                     await ImagePicker().getImage(source: ImageSource.camera);
                 if (file != null) {
                   Navigator.of(_).pop();
-                  File? _temp = await _cropImage(file.path);
-                  if (_temp != null) {
-                    setState(() {
-                      _image = _temp;
-                    });
-                  }
+                  await _cropImage(file.path);
                 }
               },
             ),
@@ -124,12 +155,7 @@ class _ProfileViewState extends State<ProfileView> {
                     await ImagePicker().getImage(source: ImageSource.gallery);
                 if (file != null) {
                   Navigator.of(_).pop();
-                  File? _temp = await _cropImage(file.path);
-                  if (_temp != null) {
-                    setState(() {
-                      _image = _temp;
-                    });
-                  }
+                  await _cropImage(file.path);
                 }
               },
             ),
@@ -148,48 +174,76 @@ class _ProfileViewState extends State<ProfileView> {
         _area!.text.isNotEmpty &&
         _city!.text.isNotEmpty &&
         _state!.text.isNotEmpty) {
-      if (_pass!.text.length >= 8) {
-        setState(() {
-          this._isLoading = true;
-        });
-        UserModel _user = UserModel(
-          name: _name!.text,
-          email: _email!.text,
-          contact: _contact!.text,
-          pass: _pass!.text,
-          gender: _gender!.text,
-          address: _address!.text,
-          city: _city!.text,
-          area: _area!.text,
-          state: _state!.text,
-          dob: Constant.getUser.dob,
-        );
+      if (_name!.text != Constant.getUser.name ||
+          _email!.text != Constant.getUser.email ||
+          _contact!.text != Constant.getUser.contact ||
+          _pass!.text != Constant.getUser.pass ||
+          _address!.text != Constant.getUser.address ||
+          _area!.text != Constant.getUser.area ||
+          _city!.text != Constant.getUser.city ||
+          _state!.text != Constant.getUser.state) {
+        if (_contact!.text.length == 10) {
+          if (_pass!.text.length >= 8) {
+            setState(() {
+              this._isLoading = true;
+            });
+            UserModel _user = UserModel(
+              uid: Constant.getUser.uid,
+              name: _name!.text,
+              email: _email!.text,
+              contact: _contact!.text,
+              pass: _pass!.text,
+              gender: Constant.getUser.gender,
+              profile: Constant.getUser.profile,
+              address: _address!.text,
+              city: _city!.text,
+              area: _area!.text,
+              state: _state!.text,
+              dob: Constant.getUser.dob,
+            );
 
-        DatabaseManager _db = DatabaseManager.getInstance;
-        bool _result = await _db.signUp(_user, _image);
+            DatabaseManager _db = DatabaseManager.getInstance;
+            bool _result = await _db.updateProfile(
+                _user,
+                _email!.text != Constant.getUser.email,
+                _pass!.text != Constant.getUser.pass);
 
-        setState(() {
-          this._isLoading = false;
-        });
-        if (_result) {
-          // Constant.isLoggedIn = true;
-          // Navigator.popUntil(context, ModalRoute.withName('/'));
-          // Navigator.pushNamed(context, '/');
+            setState(() {
+              this._isLoading = false;
+            });
+            if (_result) {
+              // ignore: deprecated_member_use
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Profile Updated Successfully"),
+                ),
+              );
+            } else {
+              // ignore: deprecated_member_use
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Error Occured"),
+                ),
+              );
+            }
+          } else {
+            // ignore: deprecated_member_use
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content:
+                    Text("Password should be atleast 8 Characters Long!!!"),
+              ),
+            );
+          }
         } else {
           // ignore: deprecated_member_use
           Scaffold.of(context).showSnackBar(
             SnackBar(
-              content: Text("Error Occured"),
+              content:
+                  Text("Mobile Number should be 10 Numeric Digits Long!!!"),
             ),
           );
         }
-      } else {
-        // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Password should be atleast 8 Characters Long!!!"),
-          ),
-        );
       }
     } else {
       // ignore: deprecated_member_use
@@ -275,11 +329,16 @@ class _ProfileViewState extends State<ProfileView> {
                                       scale: 1.0,
                                       fit: BoxFit.contain,
                                     )
-                                  : CachedNetworkImage(
-                                      imageUrl:
-                                          Constant.getUser.profile.toString(),
-                                      fit: BoxFit.contain,
-                                    ),
+                                  : _profileUri != null
+                                      ? CachedNetworkImage(
+                                          imageUrl: _profileUri.toString(),
+                                          fit: BoxFit.contain,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/user.png',
+                                          scale: 1.0,
+                                          fit: BoxFit.contain,
+                                        ),
                             ),
                           ),
                         ),
@@ -305,16 +364,19 @@ class _ProfileViewState extends State<ProfileView> {
                     InputField(
                       controller: _name,
                       title: "Name",
+                      enabled: _isEditable!,
                     ),
                     InputField(
                       controller: _email,
                       title: "Email",
                       keyboardType: TextInputType.emailAddress,
+                      enabled: _isEditable!,
                     ),
                     InputField(
                       controller: _contact,
                       title: "Contact",
                       keyboardType: TextInputType.phone,
+                      enabled: _isEditable!,
                     ),
                     Row(
                       children: [
@@ -339,11 +401,13 @@ class _ProfileViewState extends State<ProfileView> {
                       controller: _address,
                       title: "Address",
                       maxLines: 5,
+                      enabled: _isEditable!,
                     ),
                     InputField(
                       controller: _area,
                       title: "Area",
                       textCapitalization: TextCapitalization.characters,
+                      enabled: _isEditable!,
                     ),
                     Row(
                       children: [
@@ -352,6 +416,7 @@ class _ProfileViewState extends State<ProfileView> {
                             controller: _city,
                             title: "City",
                             textCapitalization: TextCapitalization.characters,
+                            enabled: _isEditable!,
                           ),
                         ),
                         SizedBox(width: 4.0),
@@ -360,27 +425,36 @@ class _ProfileViewState extends State<ProfileView> {
                             controller: _state,
                             title: "State",
                             textCapitalization: TextCapitalization.characters,
+                            enabled: _isEditable!,
                           ),
                         ),
                       ],
                     ),
-                    InputField(
-                      controller: _pass,
-                      title: "Password",
-                      obscureText: true,
-                      visibilityToggle: true,
-                    ),
+                    _isEditable!
+                        ? InputField(
+                            controller: _pass,
+                            title: "Password",
+                            obscureText: true,
+                            visibilityToggle: true,
+                          )
+                        : SizedBox(),
                   ],
                 ),
               ),
-              SizedBox(height: 20.0),
+              SizedBox(height: 80.0),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(FlutterIcons.edit_faw5s),
+        onPressed: () {
+          setState(() {
+            _isEditable = !_isEditable!;
+          });
+        },
+        child: Icon(
+          _isEditable! ? FlutterIcons.check_faw5s : FlutterIcons.edit_faw5s,
+        ),
         heroTag: 'button',
       ),
     );
