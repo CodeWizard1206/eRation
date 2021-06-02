@@ -1,15 +1,12 @@
 import 'package:e_ration_seller/COMPONENTS/app_bar.dart';
 import 'package:e_ration_seller/COMPONENTS/app_drawer.dart';
+import 'package:e_ration_seller/COMPONENTS/review_card.dart';
 import 'package:flutter/material.dart';
 
-class Dashboard extends StatefulWidget {
-  Dashboard({Key? key}) : super(key: key);
+class Dashboard extends StatelessWidget {
+  final int rating = 3;
+  const Dashboard({Key? key}) : super(key: key);
 
-  @override
-  _DashboardState createState() => _DashboardState();
-}
-
-class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +15,11 @@ class _DashboardState extends State<Dashboard> {
         child: CustomAppBar(title: 'Dashboard'),
       ),
       drawer: AppDrawer(index: 0),
-      body: Container(),
+      body: ListView(
+        children: [
+          ReviewCard(),
+        ],
+      ),
     );
   }
 }
