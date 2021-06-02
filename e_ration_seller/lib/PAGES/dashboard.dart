@@ -4,6 +4,7 @@ import 'package:e_ration_seller/COMPONENTS/data_info_card.dart';
 import 'package:e_ration_seller/COMPONENTS/review_card.dart';
 import 'package:e_ration_seller/MODELS/database_model.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
 
 class Dashboard extends StatelessWidget {

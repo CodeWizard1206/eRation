@@ -12,8 +12,8 @@ List<DrawerItemModel> listItems = [
   ),
   DrawerItemModel(
     icon: FlutterIcons.store_mall_directory_mdi,
-    title: 'Manage Product',
-    route: '/products',
+    title: 'Product',
+    route: '/manage',
   ),
   DrawerItemModel(
     icon: FlutterIcons.shopping_cart_faw5s,
@@ -84,6 +84,13 @@ class AppDrawer extends StatelessWidget {
                               fontSize: 25.0,
                             ),
                           ),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.popAndPushNamed(
+                              context,
+                              item.route.toString(),
+                            );
+                          },
                         ),
                       ),
                     )
