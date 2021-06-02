@@ -4,9 +4,9 @@ import 'package:e_ration_seller/PAGES/dashboard.dart';
 import 'package:e_ration_seller/PAGES/login_screen.dart';
 import 'package:e_ration_seller/PAGES/manage_product.dart';
 import 'package:e_ration_seller/PAGES/orders.dart';
+import 'package:e_ration_seller/PAGES/profile_view.dart';
 import 'package:e_ration_seller/PAGES/queries.dart';
 import 'package:e_ration_seller/PAGES/sign_up_screen.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -51,7 +51,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => HomeRoute(),
         '/login': (context) => LoginScreen(),
-        '/signUp': (context) => SignUpScreen(),
         '/dashboard': (context) => Dashboard(),
         '/manage': (context) => ManageProduct(),
         '/orders': (context) => Orders(),

@@ -1,9 +1,11 @@
 import 'package:e_ration_seller/COMPONENTS/async_loader.dart';
 import 'package:e_ration_seller/COMPONENTS/input_field.dart';
 import 'package:e_ration_seller/MODELS/database_model.dart';
+import 'package:e_ration_seller/PAGES/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:page_transition/page_transition.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -70,7 +72,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             RawMaterialButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/signUp');
+                                // Navigator.pushNamed(context, '/signUp');
+                                Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: SignUpScreen(),
+                                  ),
+                                );
                               },
                               splashColor: Theme.of(context)
                                   .primaryColorLight

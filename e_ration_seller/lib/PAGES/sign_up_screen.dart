@@ -30,6 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController? _area;
   TextEditingController? _city;
   TextEditingController? _state;
+  final ScrollController _controller = ScrollController();
 
   TextEditingController? _gender;
   DateTime? _dob;
@@ -103,6 +104,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            _image != null
+                ? ListTile(
+                    leading: Icon(Icons.close),
+                    title: Text("Remove Image"),
+                    onTap: () {
+                      setState(() {
+                        _image = null;
+                      });
+                      Navigator.of(_).pop();
+                    },
+                  )
+                : SizedBox(),
             ListTile(
               leading: Icon(Icons.camera_alt),
               title: Text("Take Picture"),
@@ -144,9 +157,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> _signMeUp(BuildContext context) async {
-    // setState(() {
-    //   this._isLoading = true;
-    // });
     if (_name!.text.isNotEmpty &&
         _email!.text.isNotEmpty &&
         _contact!.text.isNotEmpty &&
@@ -162,6 +172,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
             setState(() {
               this._isLoading = true;
             });
+
+            _controller.animateTo(
+              _controller.position.minScrollExtent,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.fastOutSlowIn,
+            );
             UserModel _user = UserModel(
               name: _name!.text,
               email: _email!.text,
@@ -185,11 +201,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Constant.isLoggedIn = true;
               Navigator.popUntil(context, ModalRoute.withName('/'));
               Navigator.pushNamed(context, '/');
-              // Scaffold.of(context).showSnackBar(
-              //   SnackBar(
-              //     content: Text("Signed Up Successfully"),
-              //   ),
-              // );
             } else {
               // ignore: deprecated_member_use
               Scaffold.of(context).showSnackBar(
@@ -241,6 +252,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         progressIndicator: AsyncLoader(),
         child: SafeArea(
           child: ListView(
+            controller: _controller,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 18.0),
@@ -284,31 +296,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Stack(
                     alignment: Alignment.bottomRight,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(120),
-                          border: Border.all(
-                              color: Theme.of(context).primaryColorLight,
-                              width: 2),
-                        ),
-                        padding: const EdgeInsets.all(3.0),
-                        child: CircleAvatar(
-                          radius: (MediaQuery.of(context).size.width * 0.3),
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: null,
-                          child: ClipRRect(
+                      Hero(
+                        tag: 'ProfileViewer',
+                        child: Container(
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(120),
-                            child: _image != null
-                                ? Image.file(
-                                    _image!,
-                                    scale: 1.0,
-                                    fit: BoxFit.contain,
-                                  )
-                                : Image.asset(
-                                    'assets/images/user.png',
-                                    scale: 1.0,
-                                    fit: BoxFit.contain,
-                                  ),
+                            border: Border.all(
+                                color: Theme.of(context).primaryColorLight,
+                                width: 2),
+                          ),
+                          padding: const EdgeInsets.all(3.0),
+                          child: CircleAvatar(
+                            radius: (MediaQuery.of(context).size.width * 0.3),
+                            backgroundColor: Colors.transparent,
+                            backgroundImage: null,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(120),
+                              child: _image != null
+                                  ? Image.file(
+                                      _image!,
+                                      scale: 1.0,
+                                      fit: BoxFit.contain,
+                                    )
+                                  : Image.asset(
+                                      'assets/images/user.png',
+                                      scale: 1.0,
+                                      fit: BoxFit.contain,
+                                    ),
+                            ),
                           ),
                         ),
                       ),
