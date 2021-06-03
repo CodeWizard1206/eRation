@@ -206,7 +206,7 @@ class DatabaseManager {
       var _docRef =
           await _firestore.collection(_productDB).add(product.toMap());
 
-      for (int i = 0; i < images!.length; ++i) {
+      for (int i = 0; i < images.length; ++i) {
         UploadTask _task = _storage
             .ref('product/${_docRef.id}')
             .child('${_docRef.id}_$i.jpg')
