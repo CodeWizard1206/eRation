@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'package:e_ration_seller/COMPONENTS/async_loader.dart';
+import 'package:e_ration_seller/COMPONENTS/back_app_bar.dart';
 import 'package:e_ration_seller/COMPONENTS/drop_down.dart';
+import 'package:e_ration_seller/COMPONENTS/icon_button.dart';
 import 'package:e_ration_seller/COMPONENTS/input_field.dart';
 import 'package:e_ration_seller/MODELS/contants.dart';
 import 'package:e_ration_seller/MODELS/database_model.dart';
 import 'package:e_ration_seller/MODELS/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -254,41 +257,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: ListView(
             controller: _controller,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18.0),
-                child: Stack(
-                  alignment: Alignment.centerLeft,
-                  children: [
-                    Container(
-                      width: double.maxFinite,
-                      child: Text(
-                        'SignUp',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 36.0,
-                        ),
-                      ),
-                    ),
-                    RawMaterialButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      fillColor: Theme.of(context).primaryColorDark,
-                      splashColor: Theme.of(context).primaryColorLight,
-                      shape: CircleBorder(),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Icon(
-                          Icons.keyboard_arrow_left,
-                          color: Colors.white,
-                          size: 38,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              BackAppBar(title: 'SignUp'),
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.all(20),
@@ -438,35 +407,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Builder(
-                builder: (context) => Container(
-                  width: double.maxFinite,
-                  margin: const EdgeInsets.all(12.0),
-                  child: Center(
-                    child: RawMaterialButton(
-                      onPressed: () {
-                        _signMeUp(context);
-                      },
-                      fillColor: Theme.of(context).primaryColorDark,
-                      splashColor: Theme.of(context).primaryColorLight,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 22.0,
-                        ),
-                        child: Text(
-                          'Sign Me Up!',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 28,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                builder: (context) => IconButtonMaterial(
+                  onPressed: () {
+                    _signMeUp(context);
+                  },
+                  icon: FlutterIcons.user_faw5s,
+                  title: 'Sign Up',
                 ),
               ),
               SizedBox(height: 20.0),

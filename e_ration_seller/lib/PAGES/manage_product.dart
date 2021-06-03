@@ -1,9 +1,11 @@
 import 'package:e_ration_seller/COMPONENTS/app_bar.dart';
 import 'package:e_ration_seller/COMPONENTS/app_drawer.dart';
 import 'package:e_ration_seller/COMPONENTS/no_data.dart';
+import 'package:e_ration_seller/PAGES/add_product.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:page_transition/page_transition.dart';
 
 class ManageProduct extends StatelessWidget {
   const ManageProduct({Key? key}) : super(key: key);
@@ -21,7 +23,15 @@ class ManageProduct extends StatelessWidget {
         icon: FlutterIcons.store_mall_directory_mdi,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            PageTransition(
+              type: PageTransitionType.rightToLeft,
+              child: AddProduct(),
+            ),
+          );
+        },
         child: Icon(FlutterIcons.plus_faw5s),
       ),
     );
