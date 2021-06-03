@@ -8,6 +8,7 @@ import 'package:e_ration_seller/MODELS/contants.dart';
 import 'package:e_ration_seller/MODELS/database_model.dart';
 import 'package:e_ration_seller/MODELS/user_model.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';

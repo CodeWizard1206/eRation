@@ -55,7 +55,7 @@ class _ProfileViewState extends State<ProfileView> {
     _name!.text = Constant.getUser.name.toString();
     _contact!.text = Constant.getUser.contact.toString();
     _email!.text = Constant.getUser.email.toString();
-    _pass!.text = Constant.getUser.email.toString();
+    _pass!.text = Constant.getUser.pass.toString();
     _address!.text = Constant.getUser.address.toString();
     _area!.text = Constant.getUser.area.toString();
     _city!.text = Constant.getUser.city.toString();
@@ -446,16 +446,19 @@ class _ProfileViewState extends State<ProfileView> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _isEditable = !_isEditable!;
-          });
-        },
-        child: Icon(
-          _isEditable! ? FlutterIcons.check_faw5s : FlutterIcons.edit_faw5s,
+      floatingActionButton: Builder(
+        builder: (context) => FloatingActionButton(
+          onPressed: () async {
+            if (_isEditable!) await _makeEdits(context);
+            setState(() {
+              _isEditable = !_isEditable!;
+            });
+          },
+          child: Icon(
+            _isEditable! ? FlutterIcons.check_faw5s : FlutterIcons.edit_faw5s,
+          ),
+          heroTag: 'button',
         ),
-        heroTag: 'button',
       ),
     );
   }
