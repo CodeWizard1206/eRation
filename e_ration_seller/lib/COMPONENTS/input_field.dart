@@ -68,6 +68,8 @@ class InputField extends StatefulWidget {
   final int? maxLines;
   final TextInputType? keyboardType;
   final TextCapitalization textCapitalization;
+  final bool iconPlaceholder;
+  final IconData? icon;
   InputField({
     Key? key,
     this.controller,
@@ -76,6 +78,8 @@ class InputField extends StatefulWidget {
     this.visibilityToggle = false,
     this.dateToggle = false,
     this.enabled = true,
+    this.iconPlaceholder = false,
+    this.icon,
     this.title,
     this.maxLines = 1,
     this.keyboardType = TextInputType.text,
@@ -155,7 +159,12 @@ class _InputFieldState extends State<InputField> {
                       Icons.calendar_today_rounded,
                       color: Colors.black87,
                     )
-                  : null,
+                  : this.widget.iconPlaceholder
+                      ? Icon(
+                          this.widget.icon,
+                          color: Colors.black87,
+                        )
+                      : null,
         ),
       ),
     );

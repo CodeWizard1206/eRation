@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_ration_seller/MODELS/contants.dart';
+import 'package:e_ration_seller/MODELS/product_model.dart';
 import 'package:e_ration_seller/MODELS/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -191,6 +192,42 @@ class DatabaseManager {
 
       Constant.setUser = user;
       _storeCache();
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> addProductToDB(ProductModel product, List<File> images) async {
+    try {
+      List<String>? uriS = [];
+      String? thumb;
+      var _docRef =
+          await _firestore.collection(_productDB).add(product.toMap());
+
+      for (int i = 0; i < images!.length; ++i) {
+        UploadTask _task = _storage
+            .ref('product/${_docRef.id}')
+            .child('${_docRef.id}_$i.jpg')
+            .putFile(images.elementAt(i));
+        await _task.whenComplete(() {});
+        String uri = await _storage
+            .ref('product/${_docRef.id}')
+            .child('${_docRef.id}_$i.jpg')
+            .getDownloadURL();
+        uriS.add(uri);
+        if (i == 0) thumb = uri;
+        await Future.delayed(Duration(seconds: 1));
+      }
+
+      product.thumbUri = thumb;
+      product.images = uriS;
+      await _firestore
+          .collection(_productDB)
+          .doc(_docRef.id)
+          .update(product.toMap());
+
       return true;
     } catch (e) {
       print(e.toString());

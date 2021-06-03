@@ -22,17 +22,30 @@ class ManageProduct extends StatelessWidget {
         message: 'No product to show!!!',
         icon: FlutterIcons.store_mall_directory_mdi,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            PageTransition(
-              type: PageTransitionType.rightToLeft,
-              child: AddProduct(),
-            ),
-          );
-        },
-        child: Icon(FlutterIcons.plus_faw5s),
+      floatingActionButton: Builder(
+        builder: (context) => FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              PageTransition(
+                type: PageTransitionType.rightToLeft,
+                child: AddProduct(),
+              ),
+            ).then((value) {
+              if (value != null) {
+                if (value) {
+                  // ignore: deprecated_member_use
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Product Added to Inventory"),
+                    ),
+                  );
+                }
+              }
+            });
+          },
+          child: Icon(FlutterIcons.plus_faw5s),
+        ),
       ),
     );
   }
