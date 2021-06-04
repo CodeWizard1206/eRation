@@ -20,10 +20,6 @@ class Orders extends StatelessWidget {
         message: 'No queries to show!!!',
         icon: FlutterIcons.shopping_bag_ent,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(FlutterIcons.plus_faw5s),
-      ),
     );
   }
 }

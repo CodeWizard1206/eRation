@@ -124,8 +124,8 @@ class DatabaseManager {
   Stream<int> getProductsCount() {
     Stream<int> _return = _firestore
         .collection(_productDB)
-        .where('sellerUid', isEqualTo: Constant.getUser.uid)
-        .where('stockCount', isGreaterThan: 0)
+        .where('sellerId', isEqualTo: Constant.getUser.uid)
+        .where('stocks', isGreaterThan: 0)
         .snapshots()
         .map((event) => event.docs.length);
 

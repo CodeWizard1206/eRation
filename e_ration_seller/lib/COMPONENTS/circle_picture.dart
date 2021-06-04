@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CirclePicture extends StatelessWidget {
-  final ImageProvider<Object>? backgroundImage;
+  final ImageProvider<Object> backgroundImage;
   const CirclePicture({
     Key? key,
-    this.backgroundImage,
+    required this.backgroundImage,
   }) : super(key: key);
 
   @override
@@ -19,6 +19,7 @@ class CirclePicture extends StatelessWidget {
         ),
       ),
       child: CircleAvatar(
+        backgroundColor: Colors.transparent,
         backgroundImage: this.backgroundImage,
       ),
     );

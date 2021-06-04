@@ -20,10 +20,6 @@ class Queries extends StatelessWidget {
         message: 'No queries to show!!!',
         icon: FlutterIcons.chat_bubble_mdi,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(FlutterIcons.plus_faw5s),
-      ),
     );
   }
 }

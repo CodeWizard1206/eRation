@@ -62,9 +62,11 @@ class CustomAppBar extends StatelessWidget {
                 child: Hero(
                   tag: 'ProfileViewer',
                   child: CirclePicture(
-                    backgroundImage: CachedNetworkImageProvider(
-                      Constant.getUser.profile.toString(),
-                    ),
+                    backgroundImage: (Constant.getUser.profile != null)
+                        ? CachedNetworkImageProvider(
+                            Constant.getUser.profile.toString(),
+                          )
+                        : AssetImage('assets/images/user.png') as ImageProvider,
                   ),
                 ),
               )

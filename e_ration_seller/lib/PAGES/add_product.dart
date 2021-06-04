@@ -96,10 +96,11 @@ class _AddProductState extends State<AddProduct> {
       ),
     );
 
-    setState(() {
-      _currentFile = croppedFile;
-      _images.add(_currentFile!);
-    });
+    if (croppedFile != null)
+      setState(() {
+        _currentFile = croppedFile;
+        _images.add(_currentFile!);
+      });
   }
 
   void _selectImage(BuildContext context) {

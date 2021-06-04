@@ -1,6 +1,8 @@
 import 'package:e_ration_seller/COMPONENTS/app_bar.dart';
 import 'package:e_ration_seller/COMPONENTS/app_drawer.dart';
+import 'package:e_ration_seller/COMPONENTS/async_loader.dart';
 import 'package:e_ration_seller/COMPONENTS/no_data.dart';
+import 'package:e_ration_seller/MODELS/product_model.dart';
 import 'package:e_ration_seller/PAGES/add_product.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -18,10 +20,28 @@ class ManageProduct extends StatelessWidget {
         child: CustomAppBar(title: 'Products'),
       ),
       drawer: AppDrawer(index: 1),
-      body: NoData(
-        message: 'No product to show!!!',
-        icon: FlutterIcons.store_mall_directory_mdi,
-      ),
+      body: StreamBuilder<List<ProductModel>>(
+          stream: null,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              if (snapshot.hasData) {
+                if (snapshot.data!.length > 0) {
+                  return ListView(
+                    children: snapshot.data!.map((e) => SizedBox()).toList(),
+                  );
+                } else {
+                  return NoData(
+                    message: 'No product to show!!!',
+                    icon: FlutterIcons.store_mall_directory_mdi,
+                  );
+                }
+              }
+            }
+
+            return Center(
+              child: AsyncLoader(),
+            );
+          }),
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
           onPressed: () {
