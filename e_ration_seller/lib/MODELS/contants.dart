@@ -13,6 +13,10 @@ class Constant {
       value: "RICE",
       child: Text('RICE'),
     ),
+    DropdownMenuItem(
+      value: "FLOOR",
+      child: Text('FLOOR'),
+    ),
   ];
 
   static UserModel get getUser => _user;

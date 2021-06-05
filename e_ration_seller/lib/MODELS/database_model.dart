@@ -263,4 +263,14 @@ class DatabaseManager {
       return false;
     }
   }
+
+  Future<bool> deleteProduct(String uid) async {
+    try {
+      await _firestore.collection(_productDB).doc(uid).delete();
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
 }

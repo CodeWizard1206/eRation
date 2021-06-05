@@ -90,7 +90,19 @@ class _ProductInfoState extends State<ProductInfo> {
                 ),
               ),
               onTap: () async {
-                Navigator.of(context).pop();
+                bool _ret = await _db!
+                    .deleteProduct(this.widget.product.uid.toString());
+                if (_ret) {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                } else
+                  Fluttertoast.showToast(
+                    msg: 'Error Occured',
+                    toastLength: Toast.LENGTH_SHORT,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.white,
+                    textColor: Colors.black87,
+                  );
               },
             ),
           ],
@@ -159,7 +171,6 @@ class _ProductInfoState extends State<ProductInfo> {
                     title: "Product Name",
                     maxLines: 5,
                     onFieldSubmitted: (value) async {
-                      print(value);
                       bool _result = await _db!.updateProductData(
                         uid: this.widget.product.uid.toString(),
                         value: value,
@@ -188,16 +199,62 @@ class _ProductInfoState extends State<ProductInfo> {
                     controller: _desc,
                     title: "Product Description",
                     maxLines: 100,
-                    keyboardType: TextInputType.multiline,
+                    // keyboardType: TextInputType.multiline,
+                    onFieldSubmitted: (value) async {
+                      bool _result = await _db!.updateProductData(
+                        uid: this.widget.product.uid.toString(),
+                        value: value,
+                        fieldName: 'description',
+                      );
+
+                      if (_result)
+                        Fluttertoast.showToast(
+                          msg: 'Product Description Updated',
+                          toastLength: Toast.LENGTH_SHORT,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black87,
+                        );
+                      else
+                        Fluttertoast.showToast(
+                          msg: 'Error Occured',
+                          toastLength: Toast.LENGTH_SHORT,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black87,
+                        );
+                    },
                   ),
                   DropDown(
                     label: "Product Category",
                     initialValue: _category!.text,
                     items: _categoryList,
-                    onChange: (value) {
-                      if (value != 'NONE')
+                    onChange: (value) async {
+                      if (value != 'NONE') {
                         _category!.text = value;
-                      else {
+                        bool _result = await _db!.updateProductData(
+                          uid: this.widget.product.uid.toString(),
+                          value: value,
+                          fieldName: 'category',
+                        );
+
+                        if (_result)
+                          Fluttertoast.showToast(
+                            msg: 'Product Category Updated',
+                            toastLength: Toast.LENGTH_SHORT,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.white,
+                            textColor: Colors.black87,
+                          );
+                        else
+                          Fluttertoast.showToast(
+                            msg: 'Error Occured',
+                            toastLength: Toast.LENGTH_SHORT,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.white,
+                            textColor: Colors.black87,
+                          );
+                      } else {
                         Fluttertoast.showToast(
                           msg: 'Invalid Option Selected',
                           toastLength: Toast.LENGTH_SHORT,
@@ -214,6 +271,31 @@ class _ProductInfoState extends State<ProductInfo> {
                         child: InputField(
                           controller: _stock,
                           title: "Stock",
+                          keyboardType: TextInputType.number,
+                          onFieldSubmitted: (value) async {
+                            bool _result = await _db!.updateProductData(
+                              uid: this.widget.product.uid.toString(),
+                              value: int.parse(value),
+                              fieldName: 'stocks',
+                            );
+
+                            if (_result)
+                              Fluttertoast.showToast(
+                                msg: 'Stock Details Updated',
+                                toastLength: Toast.LENGTH_SHORT,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.white,
+                                textColor: Colors.black87,
+                              );
+                            else
+                              Fluttertoast.showToast(
+                                msg: 'Error Occured',
+                                toastLength: Toast.LENGTH_SHORT,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.white,
+                                textColor: Colors.black87,
+                              );
+                          },
                         ),
                       ),
                       SizedBox(width: 5.0),
@@ -223,6 +305,31 @@ class _ProductInfoState extends State<ProductInfo> {
                           title: "Price",
                           iconPlaceholder: true,
                           icon: FlutterIcons.rupee_sign_faw5s,
+                          keyboardType: TextInputType.number,
+                          onFieldSubmitted: (value) async {
+                            bool _result = await _db!.updateProductData(
+                              uid: this.widget.product.uid.toString(),
+                              value: int.parse(value),
+                              fieldName: 'price',
+                            );
+
+                            if (_result)
+                              Fluttertoast.showToast(
+                                msg: 'Product Price Updated',
+                                toastLength: Toast.LENGTH_SHORT,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.white,
+                                textColor: Colors.black87,
+                              );
+                            else
+                              Fluttertoast.showToast(
+                                msg: 'Error Occured',
+                                toastLength: Toast.LENGTH_SHORT,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.white,
+                                textColor: Colors.black87,
+                              );
+                          },
                         ),
                       ),
                     ],
