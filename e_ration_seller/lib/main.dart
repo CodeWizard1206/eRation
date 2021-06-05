@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         '/orders': (context) => Orders(),
         '/queries': (context) => Queries(),
       },
-      initialRoute: '/',
+      // initialRoute: '/',
     );
   }
 }

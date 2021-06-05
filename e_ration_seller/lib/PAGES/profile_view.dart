@@ -23,6 +23,7 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   TextEditingController? _name;
+  TextEditingController? _shopName;
   TextEditingController? _email;
   TextEditingController? _contact;
   TextEditingController? _pass;
@@ -42,6 +43,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   void initState() {
     _name = TextEditingController();
+    _shopName = TextEditingController();
     _email = TextEditingController();
     _contact = TextEditingController();
     _pass = TextEditingController();
@@ -53,6 +55,7 @@ class _ProfileViewState extends State<ProfileView> {
     _gender = TextEditingController();
 
     _name!.text = Constant.getUser.name.toString();
+    _shopName!.text = Constant.getUser.shopName.toString();
     _contact!.text = Constant.getUser.contact.toString();
     _email!.text = Constant.getUser.email.toString();
     _pass!.text = Constant.getUser.pass.toString();
@@ -167,6 +170,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   Future<void> _makeEdits(BuildContext context) async {
     if (_name!.text.isNotEmpty &&
+        _shopName!.text.isNotEmpty &&
         _email!.text.isNotEmpty &&
         _contact!.text.isNotEmpty &&
         _pass!.text.isNotEmpty &&
@@ -175,6 +179,7 @@ class _ProfileViewState extends State<ProfileView> {
         _city!.text.isNotEmpty &&
         _state!.text.isNotEmpty) {
       if (_name!.text != Constant.getUser.name ||
+          _shopName!.text != Constant.getUser.name ||
           _email!.text != Constant.getUser.email ||
           _contact!.text != Constant.getUser.contact ||
           _pass!.text != Constant.getUser.pass ||
@@ -190,6 +195,7 @@ class _ProfileViewState extends State<ProfileView> {
             UserModel _user = UserModel(
               uid: Constant.getUser.uid,
               name: _name!.text,
+              shopName: _shopName!.text,
               email: _email!.text,
               contact: _contact!.text,
               pass: _pass!.text,
@@ -365,6 +371,12 @@ class _ProfileViewState extends State<ProfileView> {
                       controller: _name,
                       title: "Name",
                       enabled: _isEditable!,
+                    ),
+                    InputField(
+                      controller: _shopName,
+                      title: "Shop Name",
+                      enabled: _isEditable!,
+                      textCapitalization: TextCapitalization.words,
                     ),
                     InputField(
                       controller: _email,

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserModel {
   String? uid;
   String? name;
+  String? shopName;
   String? email;
   String? pass;
   String? contact;
@@ -18,6 +19,7 @@ class UserModel {
   UserModel({
     this.uid,
     this.name,
+    this.shopName,
     this.email,
     this.pass,
     this.contact,
@@ -33,6 +35,7 @@ class UserModel {
   UserModel copyWith({
     String? uid,
     String? name,
+    String? shopName,
     String? email,
     String? pass,
     String? contact,
@@ -47,6 +50,7 @@ class UserModel {
     return UserModel(
       uid: uid ?? this.uid,
       name: name ?? this.name,
+      shopName: shopName ?? this.shopName,
       email: email ?? this.email,
       pass: pass ?? this.pass,
       contact: contact ?? this.contact,
@@ -64,6 +68,7 @@ class UserModel {
     return {
       'name': name,
       'email': email,
+      'shopName': shopName,
       'pass': pass,
       'contact': contact,
       'profile': profile,
@@ -87,6 +92,7 @@ class UserModel {
     return UserModel(
       uid: doc.id,
       name: doc.get('name'),
+      shopName: doc.get('shopName'),
       email: doc.get('email'),
       pass: doc.get('pass'),
       contact: doc.get('contact'),
@@ -104,6 +110,7 @@ class UserModel {
     return UserModel(
       uid: map['uid'],
       name: map['name'],
+      shopName: map['shopName'],
       email: map['email'],
       pass: map['pass'],
       contact: map['contact'],
@@ -124,7 +131,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, name: $name, email: $email, pass: $pass, contact: $contact, profile: $profile, gender: $gender, dob: $dob, address: $address, area: $area, city: $city, state: $state)';
+    return 'UserModel(uid: $uid, name: $name, shopName: $shopName, email: $email, pass: $pass, contact: $contact, profile: $profile, gender: $gender, dob: $dob, address: $address, area: $area, city: $city, state: $state)';
   }
 
   @override
@@ -134,6 +141,7 @@ class UserModel {
     return other is UserModel &&
         other.uid == uid &&
         other.name == name &&
+        other.shopName == shopName &&
         other.email == email &&
         other.pass == pass &&
         other.contact == contact &&
@@ -150,6 +158,7 @@ class UserModel {
   int get hashCode {
     return uid.hashCode ^
         name.hashCode ^
+        shopName.hashCode ^
         email.hashCode ^
         pass.hashCode ^
         contact.hashCode ^

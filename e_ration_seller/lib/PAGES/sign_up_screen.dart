@@ -8,6 +8,7 @@ import 'package:e_ration_seller/MODELS/contants.dart';
 import 'package:e_ration_seller/MODELS/database_model.dart';
 import 'package:e_ration_seller/MODELS/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -26,6 +27,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController? _name;
   TextEditingController? _email;
+  TextEditingController? _shopName;
   TextEditingController? _contact;
   TextEditingController? _pass;
   TextEditingController? _passConfirm;
@@ -47,6 +49,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void initState() {
     _name = TextEditingController();
+    _shopName = TextEditingController();
     _email = TextEditingController();
     _contact = TextEditingController();
     _pass = TextEditingController();
@@ -162,6 +165,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> _signMeUp(BuildContext context) async {
     if (_name!.text.isNotEmpty &&
+        _shopName!.text.isNotEmpty &&
         _email!.text.isNotEmpty &&
         _contact!.text.isNotEmpty &&
         _pass!.text.isNotEmpty &&
@@ -184,6 +188,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             );
             UserModel _user = UserModel(
               name: _name!.text,
+              shopName: _shopName!.text,
               email: _email!.text,
               contact: _contact!.text,
               pass: _pass!.text,
@@ -201,18 +206,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
             setState(() {
               this._isLoading = false;
             });
-            if (_result) {
-              Constant.isLoggedIn = true;
-              Navigator.popUntil(context, ModalRoute.withName('/'));
-              Navigator.pushNamed(context, '/');
-            } else {
-              // ignore: deprecated_member_use
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Error Occured"),
-                ),
-              );
-            }
+            SchedulerBinding.instance!.addPostFrameCallback((_) {
+              if (_result) {
+                Constant.isLoggedIn = true;
+                Navigator.popUntil(context, ModalRoute.withName('/'));
+                Navigator.pushNamed(context, '/');
+              } else {
+                // ignore: deprecated_member_use
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Error Occured"),
+                  ),
+                );
+              }
+            });
           } else {
             // ignore: deprecated_member_use
             Scaffold.of(context).showSnackBar(
@@ -320,6 +327,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       title: "Name",
                     ),
                     InputField(
+                      controller: _shopName,
+                      title: "Shop Name",
+                      textCapitalization: TextCapitalization.words,
+                    ),
+                    InputField(
                       controller: _email,
                       title: "Email",
                       keyboardType: TextInputType.emailAddress,
@@ -408,7 +420,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Builder(
-                builder: (context) => IconButtonMaterial(
+                builder: (_) => IconButtonMaterial(
                   onPressed: () {
                     _signMeUp(context);
                   },
