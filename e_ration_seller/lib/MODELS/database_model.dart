@@ -132,6 +132,19 @@ class DatabaseManager {
     return _return;
   }
 
+  Stream<List<ProductModel>> getProducts() {
+    Stream<List<ProductModel>> _return = _firestore
+        .collection(_productDB)
+        .where('sellerId', isEqualTo: Constant.getUser.uid)
+        .orderBy('productName')
+        .snapshots()
+        .map(
+          (event) => event.docs.map((e) => ProductModel.fromDoc(e)).toList(),
+        );
+
+    return _return;
+  }
+
   Stream<int> getQueries() {
     Stream<int> _return = _firestore
         .collection(_sellerDB)
@@ -228,6 +241,22 @@ class DatabaseManager {
           .doc(_docRef.id)
           .update(product.toMap());
 
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> updateProductData(
+      {required String uid,
+      required var value,
+      required String fieldName}) async {
+    try {
+      await _firestore
+          .collection(_productDB)
+          .doc(uid)
+          .update({fieldName: value});
       return true;
     } catch (e) {
       print(e.toString());

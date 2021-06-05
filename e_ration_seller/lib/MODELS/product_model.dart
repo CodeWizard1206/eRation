@@ -85,7 +85,7 @@ class ProductModel {
 
   factory ProductModel.fromDoc(DocumentSnapshot doc) {
     return ProductModel(
-      uid: doc.get('uid'),
+      uid: doc.id,
       sellerId: doc.get('sellerId'),
       sellerName: doc.get('sellerName'),
       sellerCity: doc.get('sellerCity'),

@@ -4,11 +4,13 @@ class IconButtonMaterial extends StatelessWidget {
   final String? title;
   final IconData? icon;
   final void Function()? onPressed;
-  const IconButtonMaterial({
+  final Color? fillColor;
+  IconButtonMaterial({
     Key? key,
     this.title,
     this.icon,
     this.onPressed,
+    this.fillColor,
   }) : super(key: key);
 
   @override
@@ -19,7 +21,9 @@ class IconButtonMaterial extends StatelessWidget {
       child: Center(
         child: RawMaterialButton(
           onPressed: this.onPressed,
-          fillColor: Theme.of(context).primaryColorDark,
+          fillColor: this.fillColor != null
+              ? this.fillColor
+              : Theme.of(context).primaryColorDark,
           splashColor: Theme.of(context).primaryColorLight,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),

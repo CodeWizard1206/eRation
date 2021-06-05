@@ -70,6 +70,8 @@ class InputField extends StatefulWidget {
   final TextCapitalization textCapitalization;
   final bool iconPlaceholder;
   final IconData? icon;
+  final Function(String)? onFieldSubmitted;
+
   InputField({
     Key? key,
     this.controller,
@@ -84,6 +86,7 @@ class InputField extends StatefulWidget {
     this.maxLines = 1,
     this.keyboardType = TextInputType.text,
     this.textCapitalization = TextCapitalization.none,
+    this.onFieldSubmitted,
   }) : super(key: key);
 
   @override
@@ -113,11 +116,9 @@ class _InputFieldState extends State<InputField> {
         cursorColor: Theme.of(context).primaryColorLight,
         textCapitalization: this.widget.textCapitalization,
         enabled: this.widget.dateToggle ? false : this.widget.enabled,
+        onFieldSubmitted: this.widget.onFieldSubmitted,
         decoration: InputDecoration(
           hintText: this.widget.title,
-          // hintStyle: TextStyle(
-          //   color: Theme.of(context).primaryColorLight,
-          // ),
           labelText: this.widget.title,
           labelStyle: TextStyle(
             color: Theme.of(context).primaryColorDark,

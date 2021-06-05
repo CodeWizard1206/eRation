@@ -12,7 +12,7 @@ List<DrawerItemModel> listItems = [
   ),
   DrawerItemModel(
     icon: FlutterIcons.store_mall_directory_mdi,
-    title: 'Product',
+    title: 'Products',
     route: '/manage',
   ),
   DrawerItemModel(

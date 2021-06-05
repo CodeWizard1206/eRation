@@ -44,16 +44,7 @@ class _AddProductState extends State<AddProduct> {
     _stock = TextEditingController();
     _price = TextEditingController();
 
-    _categoryList = [
-      DropdownMenuItem(
-        value: "NONE",
-        child: Text('SELECT A CATEGORY'),
-      ),
-      DropdownMenuItem(
-        value: "RICE",
-        child: Text('RICE'),
-      ),
-    ];
+    _categoryList = Constant.categoryList;
 
     _category!.text = "NONE";
     _stock!.text = "1";
@@ -221,7 +212,7 @@ class _AddProductState extends State<AddProduct> {
           });
           ProductModel _product = ProductModel(
             sellerId: Constant.getUser.uid,
-            sellerName: Constant.getUser.name,
+            sellerName: Constant.getUser.shopName,
             sellerArea: Constant.getUser.area,
             sellerCity: Constant.getUser.city,
             productName: _name!.text,
