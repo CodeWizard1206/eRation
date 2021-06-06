@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'E Ration Seller',
+      title: 'eRation Seller',
       theme: ThemeData(
         primaryColorLight: Color(0xFFFFCA28),
         primaryColorDark: Color(0xFFFFA000),
