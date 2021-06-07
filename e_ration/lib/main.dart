@@ -1,4 +1,7 @@
-import 'package:e_ration/MODELS/constant.dart';
+import 'package:e_ration/MODELS/constants.dart';
+import 'package:e_ration/MODELS/database_model.dart';
+import 'package:e_ration/PAGES/dashboard.dart';
+import 'package:e_ration/PAGES/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +16,7 @@ void main() async {
       _cache.getBool('loggedIn') == null ? false : _cache.getBool('loggedIn')!;
 
   if (Constant.isLoggedIn!) {
-    // Constant.setUser = await DatabaseManager.getInstance.getUser(_cache);
+    Constant.setUser = await DatabaseManager.getInstance.getUser(_cache);
   }
 
   await SystemChrome.setPreferredOrientations(
@@ -53,6 +56,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Constant.isLoggedIn! ? Dashboard() : LoginScreen();
   }
 }
