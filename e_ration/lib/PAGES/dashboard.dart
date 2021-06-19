@@ -1,15 +1,28 @@
+import 'package:e_ration/COMPONENTS/Home.dart';
 import 'package:e_ration/COMPONENTS/app_bar.dart';
 import 'package:e_ration/COMPONENTS/app_drawer.dart';
-import 'package:e_ration/COMPONENTS/data_info_card.dart';
-import 'package:e_ration/COMPONENTS/review_card.dart';
-import 'package:e_ration/MODELS/database_model.dart';
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:flutter_icons/flutter_icons.dart';
 
-class Dashboard extends StatelessWidget {
-  final int rating = 3;
-  const Dashboard({Key? key}) : super(key: key);
+class Dashboard extends StatefulWidget {
+  Dashboard({Key? key}) : super(key: key);
+
+  @override
+  _DashboardState createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  int _selectedIndex = 0;
+  List<Widget> _widgetList = [
+    Home(),
+    Text('My Cart'),
+    Text('My Orders'),
+  ];
+
+  void _onItemTap(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,24 +32,40 @@ class Dashboard extends StatelessWidget {
         child: CustomAppBar(title: 'eRation'),
       ),
       drawer: AppDrawer(index: 0),
-      body: ListView(
-        children: [
-          // ReviewCard(),
-          // Row(
-          //   children: [
-          //     DataInfoCard(
-          //       title: 'Prodcuts',
-          //       icon: FlutterIcons.shopping_cart_ent,
-          //       stream: DatabaseManager.getInstance.getProductsCount(),
-          //     ),
-          //     DataInfoCard(
-          //       title: 'Queries',
-          //       icon: FlutterIcons.chat_bubble_mdi,
-          //       stream: DatabaseManager.getInstance.getQueries(),
-          //     ),
-          //   ],
-          // ),
-        ],
+      body: AnimatedContainer(
+        duration: Duration(milliseconds: 500),
+        child: _widgetList.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: Material(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15.0),
+          topRight: Radius.circular(15.0),
+        ),
+        elevation: 50.0,
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
+          ),
+          child: BottomNavigationBar(
+            onTap: (index) => _onItemTap(index),
+            currentIndex: _selectedIndex,
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_cart),
+                label: 'My Cart',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.history_rounded),
+                label: 'My Orders',
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

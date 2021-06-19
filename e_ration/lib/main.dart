@@ -43,6 +43,11 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Product Sans',
         primarySwatch: Colors.grey,
         shadowColor: Color(0xFFFFCA28),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Color(0xFFFFA000),
+          showUnselectedLabels: false,
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       routes: {
         '/': (context) => Home(),

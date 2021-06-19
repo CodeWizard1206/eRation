@@ -47,7 +47,7 @@ class DatabaseManager {
         User? _user = _userCred.user;
 
         DocumentSnapshot doc =
-            await _firestore.collection("sellerDatabase").doc(_user!.uid).get();
+            await _firestore.collection(_userDB).doc(_user!.uid).get();
 
         Constant.setUser = UserModel.fromDoc(doc);
         Constant.isLoggedIn = true;
