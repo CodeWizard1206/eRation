@@ -1,6 +1,5 @@
 import 'package:e_ration_seller/MODELS/contants.dart';
 import 'package:e_ration_seller/MODELS/database_model.dart';
-import 'package:e_ration_seller/PAGES/add_category.dart';
 import 'package:e_ration_seller/PAGES/dashboard.dart';
 import 'package:e_ration_seller/PAGES/login_screen.dart';
 import 'package:e_ration_seller/PAGES/manage_product.dart';
@@ -65,7 +64,7 @@ class HomeRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Constant.isLoggedIn! ? AddCategory() : LoginScreen();
+    return Constant.isLoggedIn! ? Dashboard() : LoginScreen();
     // return AddCategory();
   }
 }
