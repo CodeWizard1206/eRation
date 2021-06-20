@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_ration/COMPONENTS/async_loader.dart';
 import 'package:e_ration/MODELS/category_model.dart';
+import 'package:e_ration/PAGES/manage_product.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -60,7 +62,17 @@ class Home extends StatelessWidget {
                                       borderRadius:
                                           BorderRadius.circular(10.0)),
                                   child: InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        PageTransition(
+                                          type: PageTransitionType.rightToLeft,
+                                          child: ManageProduct(
+                                            category: e.category,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                     child: Column(
                                       children: [
                                         Expanded(

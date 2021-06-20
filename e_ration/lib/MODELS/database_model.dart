@@ -135,7 +135,19 @@ class DatabaseManager {
   Stream<List<ProductModel>> getProducts() {
     Stream<List<ProductModel>> _return = _firestore
         .collection(_productDB)
-        .where('sellerId', isEqualTo: Constant.getUser.uid)
+        .orderBy('productName')
+        .snapshots()
+        .map(
+          (event) => event.docs.map((e) => ProductModel.fromDoc(e)).toList(),
+        );
+
+    return _return;
+  }
+
+  Stream<List<ProductModel>> getProductsWhereCategory(String category) {
+    Stream<List<ProductModel>> _return = _firestore
+        .collection(_productDB)
+        .where('category', isEqualTo: category)
         .orderBy('productName')
         .snapshots()
         .map(

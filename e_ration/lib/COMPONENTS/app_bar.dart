@@ -9,7 +9,9 @@ import 'package:page_transition/page_transition.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String? title;
-  const CustomAppBar({Key? key, this.title}) : super(key: key);
+  final bool isBackNeeded;
+  const CustomAppBar({Key? key, this.title, this.isBackNeeded = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +30,24 @@ class CustomAppBar extends StatelessWidget {
                   minWidth: 0,
                 ),
                 onPressed: () {
-                  Scaffold.of(context).openDrawer();
+                  if (this.isBackNeeded)
+                    Navigator.pop(context);
+                  else
+                    Scaffold.of(context).openDrawer();
                 },
                 fillColor: Theme.of(context).primaryColorDark,
                 splashColor: Theme.of(context).primaryColorLight,
                 shape: CircleBorder(),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: this.isBackNeeded
+                      ? const EdgeInsets.all(8.0)
+                      : const EdgeInsets.all(12.0),
                   child: Icon(
-                    FlutterIcons.menu_open_mco,
+                    this.isBackNeeded
+                        ? FlutterIcons.arrow_left_faw5s
+                        : FlutterIcons.search_faw5s,
                     color: Colors.white,
-                    size: 32,
+                    size: this.isBackNeeded ? 32 : 24,
                   ),
                 ),
               ),
