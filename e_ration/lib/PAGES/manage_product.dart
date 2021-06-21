@@ -1,23 +1,21 @@
 import 'package:e_ration/COMPONENTS/app_bar.dart';
-import 'package:e_ration/COMPONENTS/app_drawer.dart';
 import 'package:e_ration/COMPONENTS/async_loader.dart';
 import 'package:e_ration/COMPONENTS/no_data.dart';
 import 'package:e_ration/COMPONENTS/product_card.dart';
 import 'package:e_ration/MODELS/constants.dart';
 import 'package:e_ration/MODELS/database_model.dart';
 import 'package:e_ration/MODELS/product_model.dart';
-import 'package:e_ration/PAGES/add_product.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:page_transition/page_transition.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
 
 class ManageProduct extends StatefulWidget {
   final String? category;
+  final String? search;
   ManageProduct({
     Key? key,
     this.category,
+    this.search,
   }) : super(key: key);
 
   @override
@@ -45,13 +43,30 @@ class _ManageProductState extends State<ManageProduct> {
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.none) {
               if (snapshot.data != null) {
-                var _data = snapshot.data!
-                    .where(
-                      (element) =>
-                          element.sellerArea == Constant.getUser.area &&
-                          element.stocks! > 0,
-                    )
-                    .toList();
+                var _data;
+                if (this.widget.category != null) {
+                  _data = snapshot.data!
+                      .where(
+                        (element) =>
+                            element.sellerArea == Constant.getUser.area &&
+                            element.stocks! > 0,
+                      )
+                      .toList();
+                } else {
+                  _data = snapshot.data!
+                      .where(
+                        (element) => (element.sellerArea ==
+                                Constant.getUser.area &&
+                            element.stocks! > 0 &&
+                            (element.productName!
+                                    .contains(this.widget.search!) ||
+                                element.category!
+                                    .contains(this.widget.search!) ||
+                                element.description!
+                                    .contains(this.widget.search!))),
+                      )
+                      .toList();
+                }
                 if (_data.length > 0) {
                   return ListView(
                     children: [

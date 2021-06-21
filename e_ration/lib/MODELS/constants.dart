@@ -1,11 +1,10 @@
-import 'package:e_ration/MODELS/product_model.dart';
+import 'package:e_ration/MODELS/cart_model.dart';
 import 'package:e_ration/MODELS/user_model.dart';
-import 'package:flutter/material.dart';
 
 class Constant {
   static UserModel _user = UserModel();
   static bool? isLoggedIn = false;
-  static List<ProductModel> cartItems = [];
+  static List<CartModel> cartItems = [];
   // static List<DropdownMenuItem> categoryList = [
   //   DropdownMenuItem(
   //     value: "NONE",
