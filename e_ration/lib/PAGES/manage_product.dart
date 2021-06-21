@@ -13,33 +13,46 @@ import 'package:page_transition/page_transition.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
 
-class ManageProduct extends StatelessWidget {
+class ManageProduct extends StatefulWidget {
   final String? category;
-  const ManageProduct({Key? key, this.category}) : super(key: key);
+  ManageProduct({
+    Key? key,
+    this.category,
+  }) : super(key: key);
 
+  @override
+  _ManageProductState createState() => _ManageProductState();
+}
+
+class _ManageProductState extends State<ManageProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80),
-        child: CustomAppBar(title: 'Products', isBackNeeded: true,),
+        child: CustomAppBar(
+          title: this.widget.category != null
+              ? this.widget.category
+              : 'Search Results',
+          isBackNeeded: true,
+        ),
       ),
-      // drawer: AppDrawer(index: 1),
       body: StreamBuilder<List<ProductModel>>(
-          stream: this.category != null
+          stream: this.widget.category != null
               ? DatabaseManager.getInstance
-                  .getProductsWhereCategory(this.category!)
+                  .getProductsWhereCategory(this.widget.category!)
               : DatabaseManager.getInstance.getProducts(),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.none) {
               if (snapshot.data != null) {
-                if (snapshot.data!.length > 0) {
-                  var _data = snapshot.data!
-                      .where(
-                        (element) =>
-                            element.sellerArea == Constant.getUser.area,
-                      )
-                      .toList();
+                var _data = snapshot.data!
+                    .where(
+                      (element) =>
+                          element.sellerArea == Constant.getUser.area &&
+                          element.stocks! > 0,
+                    )
+                    .toList();
+                if (_data.length > 0) {
                   return ListView(
                     children: [
                       Column(
@@ -70,33 +83,6 @@ class ManageProduct extends StatelessWidget {
               child: AsyncLoader(),
             );
           }),
-      // floatingActionButton: Builder(
-      //   builder: (context) => FloatingActionButton(
-      //     onPressed: () {
-      //       Navigator.push(
-      //         context,
-      //         PageTransition(
-      //           type: PageTransitionType.rightToLeft,
-      //           child: AddProduct(),
-      //         ),
-      //       ).then((value) {
-      //         if (value != null) {
-      //           if (value) {
-      //             Fluttertoast.showToast(
-      //               msg: "Product Added to Inventory",
-      //               toastLength: Toast.LENGTH_SHORT,
-      //               timeInSecForIosWeb: 1,
-      //               backgroundColor: Colors.white,
-      //               textColor: Colors.black54,
-      //               fontSize: 16.0,
-      //             );
-      //           }
-      //         }
-      //       });
-      //     },
-      //     child: Icon(FlutterIcons.plus_faw5s),
-      //   ),
-      // ),
     );
   }
 }

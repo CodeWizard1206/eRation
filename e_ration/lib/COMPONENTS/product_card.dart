@@ -7,11 +7,13 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ProductCard extends StatelessWidget {
-  final ProductModel productData;
-  const ProductCard({
+  ProductCard({
     Key? key,
     required this.productData,
   }) : super(key: key);
+
+  final List<int> _rateStar = [1, 2, 3, 4, 5];
+  final ProductModel productData;
 
   @override
   Widget build(BuildContext context) {
@@ -63,19 +65,24 @@ class ProductCard extends StatelessWidget {
                     ),
                     Expanded(child: SizedBox()),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: _rateStar
+                          .map(
+                            (star) => Icon(
+                              _rateStar.indexOf(star) < (productData.rating!)
+                                  ? FlutterIcons.star_faw
+                                  : FlutterIcons.star_o_faw,
+                              color: Theme.of(context).primaryColorDark,
+                              // size: 
+                            ),
+                          )
+                          .toList(),
+                    ),
+                    SizedBox(height: 5.0,),
+                    Row(
                       children: [
-                        Text(
-                          (productData.stocks! > 0)
-                              ? 'INSTOCK'
-                              : 'OUT OF STOCK',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0,
-                            color: (productData.stocks! > 0)
-                                ? Colors.green
-                                : Colors.red,
-                          ),
-                        ),
+                        
                         Expanded(
                           child: SizedBox(),
                         ),
@@ -101,13 +108,30 @@ class ProductCard extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                               bottomRight: Radius.circular(15.0),
                               bottomLeft: Radius.circular(6.0),
-                              topLeft: Radius.circular(6.0),
+                              topLeft: Radius.circular(15.0),
                               topRight: Radius.circular(6.0),
                             ),
                           ),
-                          child: Icon(
-                            FlutterIcons.arrow_right_faw5s,
-                            color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  FlutterIcons.rupee_sign_faw5s,
+                                  color: Colors.white,
+                                ),
+                                Text(productData.price.toString(), style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 28,
+                                ),),
+                                SizedBox(width: 10.0),
+                                Icon(
+                                  FlutterIcons.arrow_right_faw5s,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],

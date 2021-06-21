@@ -135,6 +135,7 @@ class DatabaseManager {
   Stream<List<ProductModel>> getProducts() {
     Stream<List<ProductModel>> _return = _firestore
         .collection(_productDB)
+        .where('stocks', isGreaterThan: 0)
         .orderBy('productName')
         .snapshots()
         .map(
@@ -153,6 +154,7 @@ class DatabaseManager {
         .map(
           (event) => event.docs.map((e) => ProductModel.fromDoc(e)).toList(),
         );
+
 
     return _return;
   }

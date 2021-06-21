@@ -23,7 +23,7 @@ class ProductModel {
     this.sellerId,
     this.sellerName,
     this.sellerCity,
-    this.rating,
+    this.rating = 0,
     this.sellerArea,
     this.productName,
     this.category,
@@ -88,6 +88,7 @@ class ProductModel {
   }
 
   factory ProductModel.fromDoc(DocumentSnapshot doc) {
+
     return ProductModel(
       uid: doc.id,
       sellerId: doc.get('sellerId'),

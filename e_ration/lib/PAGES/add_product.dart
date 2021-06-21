@@ -44,7 +44,7 @@ class _AddProductState extends State<AddProduct> {
     _stock = TextEditingController();
     _price = TextEditingController();
 
-    _categoryList = Constant.categoryList;
+    // _categoryList = Constant.categoryList;
 
     _category!.text = "NONE";
     _stock!.text = "1";

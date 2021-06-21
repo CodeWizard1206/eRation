@@ -1,4 +1,4 @@
-import 'package:e_ration/COMPONENTS/Home.dart';
+import 'package:e_ration/COMPONENTS/home.dart';
 import 'package:e_ration/COMPONENTS/app_bar.dart';
 import 'package:e_ration/COMPONENTS/app_drawer.dart';
 import 'package:flutter/material.dart';

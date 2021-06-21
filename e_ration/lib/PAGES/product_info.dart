@@ -26,128 +26,61 @@ class ProductInfo extends StatefulWidget {
 
 class _ProductInfoState extends State<ProductInfo> {
   String? _currentFile;
-  TextEditingController? _name;
-  TextEditingController? _desc;
-  TextEditingController? _category;
-  TextEditingController? _stock;
-  TextEditingController? _price;
-
-  List<DropdownMenuItem>? _categoryList;
   List<String>? _images;
-  DatabaseManager? _db;
-
-  bool? _isLoading;
+  TextEditingController? _desc;
+  final List<int> _rateStar = [1, 2, 3, 4, 5];
 
   @override
   void initState() {
-    _name = TextEditingController();
     _desc = TextEditingController();
-    _category = TextEditingController();
-    _stock = TextEditingController();
-    _price = TextEditingController();
 
-    _name!.text = this.widget.product.productName.toString();
-    _desc!.text = this.widget.product.description.toString();
-    _category!.text = this.widget.product.category.toString();
-    _stock!.text = this.widget.product.stocks.toString();
-    _price!.text = this.widget.product.price.toString();
+    _desc!.text = widget.product.description!;
     _images = this.widget.product.images;
-    _categoryList = Constant.categoryList;
     _currentFile = _images!.first;
 
-    _db = DatabaseManager.getInstance;
 
     super.initState();
-  }
-
-  void _deleteProduct() async {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (_) => Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: 10.0,
-          vertical: 10.0,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-          color: Colors.red,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: Icon(
-                FlutterIcons.close_faw,
-                size: 30.0,
-                color: Colors.white,
-              ),
-              title: Text(
-                "Remove Product",
-                style: TextStyle(
-                  fontSize: 22.0,
-                  color: Colors.white,
-                ),
-              ),
-              onTap: () async {
-                bool _ret = await _db!
-                    .deleteProduct(this.widget.product.uid.toString());
-                if (_ret) {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                } else
-                  Fluttertoast.showToast(
-                    msg: 'Error Occured',
-                    toastLength: Toast.LENGTH_SHORT,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.white,
-                    textColor: Colors.black87,
-                  );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          // controller: _controller,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
           children: [
-            BackAppBar(title: 'Add Product'),
-            Builder(
-              builder: (context) => AnimatedContainer(
-                duration: Duration(
-                  seconds: 1,
-                ),
-                height: _currentFile != null ? 400 : 75,
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: CachedNetworkImage(
-                        imageUrl: _currentFile!,
-                        height: double.maxFinite,
-                        fit: BoxFit.cover,
-                      ),
+            ListView(
+              children: [
+                BackAppBar(title: ''),
+                Builder(
+                  builder: (context) => AnimatedContainer(
+                    duration: Duration(
+                      seconds: 1,
                     ),
-                    SizedBox(height: 5.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: _images!
-                          .map((image) => GestureDetector(
+                    height: _currentFile != null ? 400 : 75,
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: CachedNetworkImage(
+                            imageUrl: _currentFile!,
+                            height: double.maxFinite,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(height: 5.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: _images!
+                              .map((image) => GestureDetector(
                                 onTap: () {
                                   setState(() {
                                     _currentFile = image;
                                   });
                                 },
-                                child: Padding(
+                                                              child: Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: CirclePicture(
                                     backgroundImage:
@@ -155,194 +88,149 @@ class _ProductInfoState extends State<ProductInfo> {
                                   ),
                                 ),
                               ))
-                          .toList(),
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal:10.0),
+                        child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: _rateStar
+                            .map(
+                              (star) => Icon(
+                                _rateStar.indexOf(star) < (widget.product.rating!)
+                                    ? FlutterIcons.star_faw
+                                    : FlutterIcons.star_o_faw,
+                                color: Theme.of(context).primaryColorDark,
+                                // size: 
+                              ),
+                            )
+                            .toList(),
+                    ),
+                      ),
+                    SizedBox(height: 5.0,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal:10.0),
+                        child: Text(
+                          widget.product.productName!,
+                          textAlign: TextAlign.left,
+                          maxLines: 3,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left:14.0),
+                        child: Text(
+                          widget.product.category!,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      SizedBox(height:15.0),
+                      InputField(
+                        controller: _desc,
+                        title: "Product Description",
+                        maxLines: 100,
+                        enabled: false,
+                      ),
+                      SizedBox(height:80.0),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Material(
+              elevation: 25.0,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0),),
+              child: Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Constant.cartItems.contains(widget.product) ? SizedBox() : Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            Constant.cartItems.add(widget.product);
+                          });
+                        },
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal:15.0,),
+                            child: Text(
+                              'Buy Now',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 28,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Material(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0),),
+                      color: Theme.of(context).primaryColorDark,
+                      child: InkWell(
+                        onTap: () {
+                          if (Constant.cartItems.contains(widget.product)) {
+                            setState(() {
+                              Constant.cartItems.remove(widget.product);
+                            });
+                          }
+                        },
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 100),
+                          height: 60.0,
+                          width: Constant.cartItems.contains(widget.product) ? MediaQuery.of(context).size.width : null,
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                SizedBox(width: 15),
+                                Constant.cartItems.contains(widget.product)
+                                  ? SizedBox()
+                                  :Icon(FlutterIcons.rupee_sign_faw5s, color: Colors.white, size: 28,),
+                                AnimatedDefaultTextStyle(
+                                  duration: const Duration(milliseconds: 700),
+                                  curve: Curves.bounceInOut,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30.0,
+                                    color: Colors.white,
+                                  ),
+                                  child: Text(
+                                    Constant.cartItems.contains(widget.product) ? 'Move to cart' : widget.product.price.toString(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                SizedBox(width: 15.0),
+                                Icon(FlutterIcons.shopping_cart_faw5s,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
+                                SizedBox(width: 10.0),
+                              ],
+                            ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  InputField(
-                    controller: _name,
-                    title: "Product Name",
-                    maxLines: 5,
-                    onFieldSubmitted: (value) async {
-                      bool _result = await _db!.updateProductData(
-                        uid: this.widget.product.uid.toString(),
-                        value: value,
-                        fieldName: 'productName',
-                      );
-
-                      if (_result)
-                        Fluttertoast.showToast(
-                          msg: 'Product Name Updated',
-                          toastLength: Toast.LENGTH_SHORT,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black87,
-                        );
-                      else
-                        Fluttertoast.showToast(
-                          msg: 'Error Occured',
-                          toastLength: Toast.LENGTH_SHORT,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black87,
-                        );
-                    },
-                  ),
-                  InputField(
-                    controller: _desc,
-                    title: "Product Description",
-                    maxLines: 100,
-                    // keyboardType: TextInputType.multiline,
-                    onFieldSubmitted: (value) async {
-                      bool _result = await _db!.updateProductData(
-                        uid: this.widget.product.uid.toString(),
-                        value: value,
-                        fieldName: 'description',
-                      );
-
-                      if (_result)
-                        Fluttertoast.showToast(
-                          msg: 'Product Description Updated',
-                          toastLength: Toast.LENGTH_SHORT,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black87,
-                        );
-                      else
-                        Fluttertoast.showToast(
-                          msg: 'Error Occured',
-                          toastLength: Toast.LENGTH_SHORT,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black87,
-                        );
-                    },
-                  ),
-                  DropDown(
-                    label: "Product Category",
-                    initialValue: _category!.text,
-                    items: _categoryList,
-                    onChange: (value) async {
-                      if (value != 'NONE') {
-                        _category!.text = value;
-                        bool _result = await _db!.updateProductData(
-                          uid: this.widget.product.uid.toString(),
-                          value: value,
-                          fieldName: 'category',
-                        );
-
-                        if (_result)
-                          Fluttertoast.showToast(
-                            msg: 'Product Category Updated',
-                            toastLength: Toast.LENGTH_SHORT,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.white,
-                            textColor: Colors.black87,
-                          );
-                        else
-                          Fluttertoast.showToast(
-                            msg: 'Error Occured',
-                            toastLength: Toast.LENGTH_SHORT,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.white,
-                            textColor: Colors.black87,
-                          );
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: 'Invalid Option Selected',
-                          toastLength: Toast.LENGTH_SHORT,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black87,
-                        );
-                      }
-                    },
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputField(
-                          controller: _stock,
-                          title: "Stock",
-                          keyboardType: TextInputType.number,
-                          onFieldSubmitted: (value) async {
-                            bool _result = await _db!.updateProductData(
-                              uid: this.widget.product.uid.toString(),
-                              value: int.parse(value),
-                              fieldName: 'stocks',
-                            );
-
-                            if (_result)
-                              Fluttertoast.showToast(
-                                msg: 'Stock Details Updated',
-                                toastLength: Toast.LENGTH_SHORT,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.white,
-                                textColor: Colors.black87,
-                              );
-                            else
-                              Fluttertoast.showToast(
-                                msg: 'Error Occured',
-                                toastLength: Toast.LENGTH_SHORT,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.white,
-                                textColor: Colors.black87,
-                              );
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 5.0),
-                      Expanded(
-                        child: InputField(
-                          controller: _price,
-                          title: "Price",
-                          iconPlaceholder: true,
-                          icon: FlutterIcons.rupee_sign_faw5s,
-                          keyboardType: TextInputType.number,
-                          onFieldSubmitted: (value) async {
-                            bool _result = await _db!.updateProductData(
-                              uid: this.widget.product.uid.toString(),
-                              value: int.parse(value),
-                              fieldName: 'price',
-                            );
-
-                            if (_result)
-                              Fluttertoast.showToast(
-                                msg: 'Product Price Updated',
-                                toastLength: Toast.LENGTH_SHORT,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.white,
-                                textColor: Colors.black87,
-                              );
-                            else
-                              Fluttertoast.showToast(
-                                msg: 'Error Occured',
-                                toastLength: Toast.LENGTH_SHORT,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.white,
-                                textColor: Colors.black87,
-                              );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  Builder(
-                    builder: (context) => IconButtonMaterial(
-                      onPressed: this._deleteProduct,
-                      icon: FlutterIcons.trash_alt_faw5s,
-                      title: 'Delete Product',
-                      fillColor: Colors.red,
-                    ),
-                  ),
-                ],
               ),
             ),
           ],
