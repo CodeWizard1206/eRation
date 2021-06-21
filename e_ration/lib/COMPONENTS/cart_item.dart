@@ -1,22 +1,22 @@
-import 'package:e_ration/MODELS/product_model.dart';
-import 'package:e_ration/PAGES/product_info.dart';
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_ration/MODELS/cart_model.dart';
+import 'package:e_ration/MODELS/product_model.dart';
+import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:page_transition/page_transition.dart';
 
-class ProductCard extends StatelessWidget {
-  ProductCard({
+class CartItem extends StatelessWidget {
+  final CartModel item;
+  final void Function()? onPressed;
+  const CartItem({
     Key? key,
-    required this.productData,
+    required this.item,
+    this.onPressed,
   }) : super(key: key);
-
-  final List<int> _rateStar = [1, 2, 3, 4, 5];
-  final ProductModel productData;
 
   @override
   Widget build(BuildContext context) {
+    ProductModel productData = item.product;
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 180,
@@ -64,49 +64,38 @@ class ProductCard extends StatelessWidget {
                       ),
                     ),
                     Expanded(child: SizedBox()),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: _rateStar
-                          .map(
-                            (star) => Icon(
-                              _rateStar.indexOf(star) < (productData.rating!)
-                                  ? FlutterIcons.star_faw
-                                  : FlutterIcons.star_o_faw,
-                              color: Theme.of(context).primaryColorDark,
-                              // size:
-                            ),
-                          )
-                          .toList(),
-                    ),
-                    SizedBox(
-                      height: 5.0,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        'Qty: ${this.item.qty}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                        ),
+                      ),
                     ),
                     Row(
                       children: [
                         Expanded(
-                          child: SizedBox(),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              'Price: ${this.item.qty * this.item.product.price!}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ),
                         ),
                         RawMaterialButton(
                           constraints: BoxConstraints(
                             minWidth: 55.0,
                             minHeight: 40.0,
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: ProductInfo(
-                                  product: productData,
-                                ),
-                              ),
-                            ).then(
-                              (value) =>
-                                  (value) ? Navigator.pop(context, true) : null,
-                            );
-                          },
-                          fillColor: Theme.of(context).primaryColorDark,
+                          onPressed: this.onPressed,
+                          fillColor: Colors.red[500],
                           elevation: 4.0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
@@ -118,26 +107,9 @@ class ProductCard extends StatelessWidget {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  FlutterIcons.rupee_sign_faw5s,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  productData.price.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 28,
-                                  ),
-                                ),
-                                SizedBox(width: 10.0),
-                                Icon(
-                                  FlutterIcons.arrow_right_faw5s,
-                                  color: Colors.white,
-                                ),
-                              ],
+                            child: Icon(
+                              FlutterIcons.trash_faw5s,
+                              color: Colors.white,
                             ),
                           ),
                         ),

@@ -1,7 +1,9 @@
-import 'package:e_ration/COMPONENTS/home.dart';
+import 'package:e_ration/PAGES/home.dart';
 import 'package:e_ration/COMPONENTS/app_bar.dart';
 import 'package:e_ration/COMPONENTS/app_drawer.dart';
 import 'package:flutter/material.dart';
+
+import 'my_cart.dart';
 
 class Dashboard extends StatefulWidget {
   Dashboard({Key? key}) : super(key: key);
@@ -12,11 +14,23 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
-  List<Widget> _widgetList = [
-    Home(),
-    Text('My Cart'),
-    Text('My Orders'),
-  ];
+  List<Widget>? _widgetList;
+
+  @override
+  void initState() {
+    _widgetList = [
+      Home(
+        moveToCart: () {
+          setState(() {
+            _selectedIndex = 1;
+          });
+        },
+      ),
+      MyCart(),
+      Text('My Orders'),
+    ];
+    super.initState();
+  }
 
   void _onItemTap(int index) {
     setState(() {
@@ -34,7 +48,7 @@ class _DashboardState extends State<Dashboard> {
       drawer: AppDrawer(index: 0),
       body: AnimatedContainer(
         duration: Duration(milliseconds: 500),
-        child: _widgetList.elementAt(_selectedIndex),
+        child: _widgetList!.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: Material(
         borderRadius: BorderRadius.only(

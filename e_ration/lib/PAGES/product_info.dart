@@ -25,6 +25,7 @@ class _ProductInfoState extends State<ProductInfo> {
   TextEditingController? _desc;
   CartModel? _cart;
   final List<int> _rateStar = [1, 2, 3, 4, 5];
+  final List<int> _qtyList = [1, 2, 3];
 
   @override
   void initState() {
@@ -158,7 +159,58 @@ class _ProductInfoState extends State<ProductInfo> {
                         maxLines: 100,
                         enabled: false,
                       ),
-                      SizedBox(height: 80.0),
+                      SizedBox(height: 10.0),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          'Quantity',
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10.0),
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: _qtyList
+                              .map(
+                                (i) => Material(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  elevation: 5.0,
+                                  child: AnimatedContainer(
+                                    duration: Duration(milliseconds: 300),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      border: Border.all(
+                                        width: i == _cart!.qty ? 2 : 0.0,
+                                        color: i == _cart!.qty
+                                            ? Theme.of(context)
+                                                .primaryColorLight
+                                            : Colors.transparent,
+                                      ),
+                                    ),
+                                    child: RawMaterialButton(
+                                      onPressed: () {
+                                        setState(() => _cart!.qty = i);
+                                      },
+                                      splashColor: Colors.transparent,
+                                      child: Text(
+                                        i.toString(),
+                                        style: TextStyle(
+                                          fontWeight: i == _cart!.qty
+                                              ? FontWeight.bold
+                                              : null,
+                                          fontSize: 18.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                      SizedBox(height: 100.0),
                     ],
                   ),
                 ),
@@ -209,9 +261,7 @@ class _ProductInfoState extends State<ProductInfo> {
                       child: InkWell(
                         onTap: () {
                           if (_cart!.added) {
-                            // setState(() {
-                            //   Constant.cartItems.remove(widget.product);
-                            // });
+                            Navigator.pop(context, true);
                           }
                         },
                         child: AnimatedContainer(

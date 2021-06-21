@@ -7,7 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  final Function? moveToCart;
+  const Home({
+    Key? key,
+    this.moveToCart,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +75,8 @@ class Home extends StatelessWidget {
                                             category: e.category,
                                           ),
                                         ),
-                                      );
+                                      ).then((value) =>
+                                          value ? this.moveToCart!() : null);
                                     },
                                     child: Column(
                                       children: [

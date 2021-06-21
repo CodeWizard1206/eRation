@@ -31,6 +31,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: AnimatedContainer(
+          width: MediaQuery.of(context).size.width,
           duration: Duration(milliseconds: 500),
           padding: const EdgeInsets.all(8.0),
           child: this._isSearching
@@ -129,30 +130,35 @@ class SearchBar extends StatelessWidget {
       GestureDetector(
         onTap: this.onBackPress!,
         child: Icon(
-          FlutterIcons.arrow_left_evi,
+          FlutterIcons.arrow_left_faw5s,
           color: Theme.of(context).primaryColorLight,
         ),
       ),
-      TextField(
-        controller: controller,
-        autofocus: true,
-        decoration: InputDecoration(
-          hintText: 'Search...',
-          border: InputBorder.none,
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+          child: TextField(
+            controller: controller,
+            autofocus: true,
+            decoration: InputDecoration(
+              hintText: 'Search...',
+              border: InputBorder.none,
+            ),
+            onSubmitted: (value) {
+              if (controller!.text.isNotEmpty) {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.rightToLeft,
+                    child: ManageProduct(
+                      search: controller!.text,
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
         ),
-        onSubmitted: (value) {
-          if (controller!.text.isNotEmpty) {
-            Navigator.push(
-              context,
-              PageTransition(
-                type: PageTransitionType.rightToLeft,
-                child: ManageProduct(
-                  search: controller!.text,
-                ),
-              ),
-            );
-          }
-        },
       ),
     ]);
   }

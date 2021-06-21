@@ -43,7 +43,7 @@ class _ManageProductState extends State<ManageProduct> {
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.none) {
               if (snapshot.data != null) {
-                var _data;
+                List<ProductModel> _data;
                 if (this.widget.category != null) {
                   _data = snapshot.data!
                       .where(
@@ -58,12 +58,12 @@ class _ManageProductState extends State<ManageProduct> {
                         (element) => (element.sellerArea ==
                                 Constant.getUser.area &&
                             element.stocks! > 0 &&
-                            (element.productName!
-                                    .contains(this.widget.search!) ||
-                                element.category!
-                                    .contains(this.widget.search!) ||
-                                element.description!
-                                    .contains(this.widget.search!))),
+                            (element.productName!.toLowerCase().contains(
+                                    this.widget.search!.toLowerCase()) ||
+                                element.category!.toLowerCase().contains(
+                                    this.widget.search!.toLowerCase()) ||
+                                element.description!.toLowerCase().contains(
+                                    this.widget.search!.toLowerCase()))),
                       )
                       .toList();
                 }
