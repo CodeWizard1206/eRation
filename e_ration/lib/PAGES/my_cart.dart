@@ -2,8 +2,11 @@ import 'package:e_ration/COMPONENTS/cart_item.dart';
 import 'package:e_ration/COMPONENTS/no_data.dart';
 import 'package:e_ration/MODELS/cart_model.dart';
 import 'package:e_ration/MODELS/constants.dart';
+import 'package:e_ration/PAGES/date_time_scheduler.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:page_transition/page_transition.dart';
 
 class MyCart extends StatefulWidget {
   MyCart({Key? key}) : super(key: key);
@@ -57,7 +60,17 @@ class _MyCartState extends State<MyCart> {
             height: 80,
             padding: const EdgeInsets.all(10.0),
             child: RawMaterialButton(
-              onPressed: () {},
+              onPressed: () {
+                if (Constant.cartItems.length > 0) {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      child: DateTimeScheduler(),
+                    ),
+                  );
+                }
+              },
               fillColor: Theme.of(context).primaryColorDark,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),

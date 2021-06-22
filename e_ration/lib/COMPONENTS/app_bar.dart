@@ -11,9 +11,11 @@ import 'package:page_transition/page_transition.dart';
 class CustomAppBar extends StatefulWidget {
   final String? title;
   final bool isBackNeeded;
+  final Function? moveToCart;
   CustomAppBar({
     Key? key,
     this.title,
+    this.moveToCart,
     this.isBackNeeded = false,
   }) : super(key: key);
 
@@ -116,11 +118,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
 }
 
 class SearchBar extends StatelessWidget {
+  final Function? moveToCart;
   final TextEditingController? controller;
   final void Function()? onBackPress;
   const SearchBar({
     Key? key,
     this.onBackPress,
+    this.moveToCart,
     this.controller,
   }) : super(key: key);
 
@@ -154,7 +158,7 @@ class SearchBar extends StatelessWidget {
                       search: controller!.text,
                     ),
                   ),
-                );
+                ).then((value) => value ? this.moveToCart!() : null);
               }
             },
           ),

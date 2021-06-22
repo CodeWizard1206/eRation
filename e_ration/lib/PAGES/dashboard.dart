@@ -43,9 +43,15 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80),
-        child: CustomAppBar(title: 'eRation'),
+        child: CustomAppBar(
+          title: 'eRation',
+          moveToCart: () {
+            setState(() {
+              _selectedIndex = 1;
+            });
+          },
+        ),
       ),
-      drawer: AppDrawer(index: 0),
       body: AnimatedContainer(
         duration: Duration(milliseconds: 500),
         child: _widgetList!.elementAt(_selectedIndex),
