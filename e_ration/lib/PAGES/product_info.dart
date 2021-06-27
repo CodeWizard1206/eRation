@@ -8,8 +8,6 @@ import 'package:e_ration/MODELS/product_model.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-// ignore: import_of_legacy_library_into_null_safe
 
 class ProductInfo extends StatefulWidget {
   final ProductModel product;
@@ -25,7 +23,6 @@ class _ProductInfoState extends State<ProductInfo> {
   TextEditingController? _desc;
   CartModel? _cart;
   final List<int> _rateStar = [1, 2, 3, 4, 5];
-  final List<int> _qtyList = [1, 2, 3];
 
   @override
   void initState() {
@@ -158,57 +155,6 @@ class _ProductInfoState extends State<ProductInfo> {
                         title: "Product Description",
                         maxLines: 100,
                         enabled: false,
-                      ),
-                      SizedBox(height: 10.0),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Text(
-                          'Quantity',
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(10.0),
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: _qtyList
-                              .map(
-                                (i) => Material(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  elevation: 5.0,
-                                  child: AnimatedContainer(
-                                    duration: Duration(milliseconds: 300),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      border: Border.all(
-                                        width: i == _cart!.qty ? 2 : 0.0,
-                                        color: i == _cart!.qty
-                                            ? Theme.of(context)
-                                                .primaryColorLight
-                                            : Colors.transparent,
-                                      ),
-                                    ),
-                                    child: RawMaterialButton(
-                                      onPressed: () {
-                                        setState(() => _cart!.qty = i);
-                                      },
-                                      splashColor: Colors.transparent,
-                                      child: Text(
-                                        i.toString(),
-                                        style: TextStyle(
-                                          fontWeight: i == _cart!.qty
-                                              ? FontWeight.bold
-                                              : null,
-                                          fontSize: 18.0,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
                       ),
                       SizedBox(height: 100.0),
                     ],

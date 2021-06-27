@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_ration/MODELS/cart_model.dart';
 import 'package:e_ration/MODELS/constants.dart';
+import 'package:e_ration/MODELS/order_model.dart';
 import 'package:e_ration/MODELS/product_model.dart';
+import 'package:e_ration/MODELS/seller_order_model.dart';
 import 'package:e_ration/MODELS/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -17,6 +20,7 @@ class DatabaseManager {
   FirebaseStorage _storage = FirebaseStorage.instance;
 
   final String _userDB = 'userDatabase';
+  final String _sellerDB = 'sellerDatabase';
   // final String _reviewColl = 'userReviews';
   final String _productDB = 'productDatabase';
   // final String _queriesColl = 'userQueries';
@@ -286,5 +290,73 @@ class DatabaseManager {
       print(e.toString());
       return false;
     }
+  }
+
+  Future<bool> placeOrder() async {
+    int sum = 0;
+    for (CartModel i in Constant.cartItems) {
+      sum += (i.product.price! * i.qty);
+    }
+
+    DateTime _now = DateTime.now();
+    try {
+      var _user = await FirebaseFirestore.instance
+          .collection(_userDB)
+          .where('contact', isEqualTo: Constant.getUser.contact)
+          .get();
+
+      String _uid = _user.docs.first.id;
+
+      OrderModel _order = OrderModel(
+        timestamp: _now,
+        totalAmount: sum.toString(),
+        date: Constant.cartItems.first.date,
+        time: Constant.cartItems.first.time,
+        products: Constant.cartItems.map((cart) => cart.product).toList(),
+      );
+
+      var _doc = await FirebaseFirestore.instance
+          .collection(_userDB)
+          .doc(_uid)
+          .collection('myOrders')
+          .add(_order.toMap());
+
+      for (CartModel i in Constant.cartItems) {
+        SellerOrderModel _sellerorder = SellerOrderModel(
+          orderId: _doc.id,
+          name: Constant.getUser.name,
+          email: Constant.getUser.email,
+          contact: Constant.getUser.contact,
+          profile: Constant.getUser.profile,
+          timestamp: _now,
+          date: i.date,
+          time: i.time,
+          product: i.product,
+        );
+
+        await FirebaseFirestore.instance
+            .collection(_sellerDB)
+            .doc(i.product.sellerId)
+            .collection('orders')
+            .add(_sellerorder.toMap());
+
+        var _data = await FirebaseFirestore.instance
+            .collection('productDatabase')
+            .doc(i.product.uid)
+            .get();
+        await FirebaseFirestore.instance
+            .collection('productDatabase')
+            .doc(i.product.uid)
+            .update({
+          'stocks': (_data.get('stocks') - 1),
+        });
+      }
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+    return false;
   }
 }

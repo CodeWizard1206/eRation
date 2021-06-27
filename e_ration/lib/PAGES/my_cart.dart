@@ -68,7 +68,10 @@ class _MyCartState extends State<MyCart> {
                       type: PageTransitionType.rightToLeft,
                       child: DateTimeScheduler(),
                     ),
-                  );
+                  ).then((value) {
+                    if (value != null) if (value)
+                      setState(() => Constant.cartItems = []);
+                  });
                 }
               },
               fillColor: Theme.of(context).primaryColorDark,
