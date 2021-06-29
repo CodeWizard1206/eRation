@@ -1,6 +1,8 @@
+import 'package:e_ration/MODELS/constants.dart';
 import 'package:e_ration/PAGES/home.dart';
 import 'package:e_ration/COMPONENTS/app_bar.dart';
 import 'package:e_ration/COMPONENTS/app_drawer.dart';
+import 'package:e_ration/PAGES/my_orders.dart';
 import 'package:flutter/material.dart';
 
 import 'my_cart.dart';
@@ -27,7 +29,7 @@ class _DashboardState extends State<Dashboard> {
         },
       ),
       MyCart(),
-      Text('My Orders'),
+      MyOrders(),
     ];
     super.initState();
   }

@@ -7,8 +7,10 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ProductCard extends StatelessWidget {
+  final bool isClickable;
   ProductCard({
     Key? key,
+    this.isClickable = true,
     required this.productData,
   }) : super(key: key);
 
@@ -93,18 +95,21 @@ class ProductCard extends StatelessWidget {
                             minHeight: 40.0,
                           ),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: ProductInfo(
-                                  product: productData,
+                            if (isClickable) {
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: ProductInfo(
+                                    product: productData,
+                                  ),
                                 ),
-                              ),
-                            ).then(
-                              (value) =>
-                                  (value) ? Navigator.pop(context, true) : null,
-                            );
+                              ).then(
+                                (value) => (value)
+                                    ? Navigator.pop(context, true)
+                                    : null,
+                              );
+                            }
                           },
                           fillColor: Theme.of(context).primaryColorDark,
                           elevation: 4.0,
@@ -132,11 +137,13 @@ class ProductCard extends StatelessWidget {
                                     fontSize: 28,
                                   ),
                                 ),
-                                SizedBox(width: 10.0),
-                                Icon(
-                                  FlutterIcons.arrow_right_faw5s,
-                                  color: Colors.white,
-                                ),
+                                SizedBox(width: this.isClickable ? 10.0 : 0.0),
+                                this.isClickable
+                                    ? Icon(
+                                        FlutterIcons.arrow_right_faw5s,
+                                        color: Colors.white,
+                                      )
+                                    : SizedBox(),
                               ],
                             ),
                           ),

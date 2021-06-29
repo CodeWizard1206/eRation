@@ -10,7 +10,7 @@ class OrderModel {
   String? time;
   DateTime? timestamp;
   DateTime? date;
-  List<ProductModel>? products;
+  List<dynamic>? products;
   String? totalAmount;
 
   OrderModel({
@@ -51,17 +51,20 @@ class OrderModel {
   }
 
   factory OrderModel.fromDoc(DocumentSnapshot doc) {
-    Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
-    return OrderModel(
+    List<dynamic> _list = doc
+        .get('products')
+        .map((product) => ProductModel.fromMap(product as Map<String, dynamic>))
+        .toList();
+
+    OrderModel _data = OrderModel(
       uid: doc.id,
-      time: map['time'],
-      timestamp: map['timestamp'].toDate(),
-      date: map['date'].toDate(),
-      products: map['products']
-          .map((product) => ProductModel.fromMap(product))
-          .toList(),
-      totalAmount: map['totalAmount'],
+      time: doc.get('time').toString(),
+      timestamp: doc.get('timestamp').toDate(),
+      date: doc.get('date').toDate(),
+      products: _list,
+      totalAmount: doc.get('totalAmount').toString(),
     );
+    return _data;
   }
 
   factory OrderModel.fromMap(Map<String, dynamic> map) {

@@ -88,7 +88,6 @@ class ProductModel {
   }
 
   factory ProductModel.fromDoc(DocumentSnapshot doc) {
-
     return ProductModel(
       uid: doc.id,
       sellerId: doc.get('sellerId'),
@@ -109,7 +108,7 @@ class ProductModel {
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
-      uid: map['uid'],
+      // uid: map['uid'],
       sellerId: map['sellerId'],
       rating: map['rating'],
       sellerName: map['sellerName'],

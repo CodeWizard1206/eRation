@@ -66,13 +66,7 @@ class CartItem extends StatelessWidget {
                     Expanded(child: SizedBox()),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text(
-                        'Qty: ${this.item.qty}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                        ),
-                      ),
+                      child: SizedBox(),
                     ),
                     Row(
                       children: [

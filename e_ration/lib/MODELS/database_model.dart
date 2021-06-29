@@ -357,6 +357,19 @@ class DatabaseManager {
       print(e.toString());
       return false;
     }
+    // ignore: dead_code
     return false;
+  }
+
+  Stream<List<OrderModel>> getMyOrders() {
+    var _data = FirebaseFirestore.instance
+        .collection(_userDB)
+        .doc(Constant.getUser.uid!)
+        .collection('myOrders')
+        .snapshots()
+        .map((query) =>
+            query.docs.map((doc) => OrderModel.fromDoc(doc)).toList());
+
+    return _data;
   }
 }
