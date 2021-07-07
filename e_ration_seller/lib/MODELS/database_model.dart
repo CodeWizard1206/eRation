@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_ration_seller/MODELS/contants.dart';
 import 'package:e_ration_seller/MODELS/product_model.dart';
+import 'package:e_ration_seller/MODELS/seller_order_model.dart';
 import 'package:e_ration_seller/MODELS/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -272,5 +273,18 @@ class DatabaseManager {
       print(e.toString());
       return false;
     }
+  }
+
+  Stream<List<SellerOrderModel>> getOrders() {
+    var _data = _firestore
+        .collection(_sellerDB)
+        .doc(Constant.getUser.uid)
+        .collection('orders')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map((snap) =>
+            snap.docs.map((doc) => SellerOrderModel.fromDoc(doc)).toList());
+
+    return _data;
   }
 }
