@@ -33,89 +33,93 @@ class _ProductQueriesState extends State<ProductQueries> {
               return ListView.separated(
                 itemBuilder: (_, i) => InkWell(
                   onTap: () {
-                    TextEditingController _controller = TextEditingController();
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (_) => AlertDialog(
-                        title: Text(
-                          'Answer Query...',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        content: TextFormField(
-                          autofocus: true,
-                          controller: _controller,
-                          cursorColor: Theme.of(context).primaryColorLight,
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 0.7,
-                                color: Theme.of(context).primaryColorDark,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 1.5,
-                                color: Theme.of(context).primaryColorDark,
-                              ),
+                    if (snapshot.data![i].answer == null) {
+                      TextEditingController _controller =
+                          TextEditingController();
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) => AlertDialog(
+                          title: Text(
+                            'Answer Query...',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(_).pop();
-                            },
-                            child: Text(
-                              'Close',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16.0,
+                          content: TextFormField(
+                            autofocus: true,
+                            controller: _controller,
+                            cursorColor: Theme.of(context).primaryColorLight,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 0.7,
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1.5,
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
                               ),
                             ),
                           ),
-                          TextButton(
-                            onPressed: () async {
-                              if (_controller.text.isNotEmpty) {
-                                bool _result = await DatabaseManager.getInstance
-                                    .answerQuery(
-                                        widget.uid!,
-                                        snapshot.data![i].uid!,
-                                        _controller.text);
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(_).pop();
+                              },
+                              child: Text(
+                                'Close',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                if (_controller.text.isNotEmpty) {
+                                  bool _result = await DatabaseManager
+                                      .getInstance
+                                      .answerQuery(
+                                          widget.uid!,
+                                          snapshot.data![i].uid!,
+                                          _controller.text);
 
-                                if (_result) {
-                                  Navigator.of(_).pop();
-                                  Fluttertoast.showToast(
-                                    msg: 'Query Answered',
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.white,
-                                    textColor: Colors.black87,
-                                  );
-                                } else
-                                  Fluttertoast.showToast(
-                                    msg: 'Error Occured',
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.white,
-                                    textColor: Colors.black87,
-                                  );
-                              }
-                            },
-                            child: Text(
-                              'Post',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
+                                  if (_result) {
+                                    Navigator.of(_).pop();
+                                    Fluttertoast.showToast(
+                                      msg: 'Query Answered',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.white,
+                                      textColor: Colors.black87,
+                                    );
+                                  } else
+                                    Fluttertoast.showToast(
+                                      msg: 'Error Occured',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.white,
+                                      textColor: Colors.black87,
+                                    );
+                                }
+                              },
+                              child: Text(
+                                'Post',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
+                          ],
+                        ),
+                      );
+                    }
                   },
                   child: QueryBox(
                     query: snapshot.data![i],
