@@ -20,11 +20,11 @@ List<DrawerItemModel> listItems = [
     title: 'Orders',
     route: '/orders',
   ),
-  // DrawerItemModel(
-  //   icon: FlutterIcons.chat_mco,
-  //   title: 'Queries',
-  //   route: '/queries',
-  // ),
+  DrawerItemModel(
+    icon: FlutterIcons.chat_mco,
+    title: 'Queries',
+    route: '/queries',
+  ),
 ];
 
 class AppDrawer extends StatelessWidget {

@@ -1,6 +1,7 @@
 import 'package:e_ration_seller/COMPONENTS/app_bar.dart';
 import 'package:e_ration_seller/COMPONENTS/app_drawer.dart';
 import 'package:e_ration_seller/COMPONENTS/no_data.dart';
+import 'package:e_ration_seller/MODELS/product_model.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
@@ -16,10 +17,14 @@ class Queries extends StatelessWidget {
         child: CustomAppBar(title: 'Queries'),
       ),
       drawer: AppDrawer(index: 3),
-      body: NoData(
-        message: 'No queries to show!!!',
-        icon: FlutterIcons.chat_bubble_mdi,
-      ),
+      body: StreamBuilder<List<ProductModel>>(
+          stream: null,
+          builder: (context, snapshot) {
+            return NoData(
+              message: 'No queries to show!!!',
+              icon: FlutterIcons.chat_bubble_mdi,
+            );
+          }),
     );
   }
 }
