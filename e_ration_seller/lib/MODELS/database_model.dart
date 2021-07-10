@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_ration_seller/MODELS/category_model.dart';
 import 'package:e_ration_seller/MODELS/contants.dart';
 import 'package:e_ration_seller/MODELS/product_model.dart';
 import 'package:e_ration_seller/MODELS/seller_order_model.dart';
 import 'package:e_ration_seller/MODELS/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DatabaseManager {
@@ -286,5 +288,39 @@ class DatabaseManager {
             snap.docs.map((doc) => SellerOrderModel.fromDoc(doc)).toList());
 
     return _data;
+  }
+
+  Future<bool> updateOrderStatus(String uid, String status) async {
+    try {
+      await _firestore
+          .collection(_sellerDB)
+          .doc(Constant.getUser.uid)
+          .collection('orders')
+          .doc(uid)
+          .update({'status': status});
+
+      return true;
+    } catch (ex) {
+      print(ex.toString());
+      return false;
+    }
+  }
+
+  Future<List<CategoryModel>> getCategories() async {
+    var _data =
+        await FirebaseFirestore.instance.collection('productCategory').get();
+
+    var _ret = _data.docs.map((e) => CategoryModel.fromDoc(e)).toList();
+
+    _ret.forEach((element) {
+      Constant.categoryList.add(
+        DropdownMenuItem(
+          value: element.category,
+          child: Text(element.category.toString()),
+        ),
+      );
+    });
+
+    return _ret;
   }
 }

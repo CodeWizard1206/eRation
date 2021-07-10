@@ -36,7 +36,7 @@ class Orders extends StatelessWidget {
             }
 
             return NoData(
-              message: 'No queries to show!!!',
+              message: 'No orders to show!!!',
               icon: FlutterIcons.shopping_bag_ent,
             );
           }),

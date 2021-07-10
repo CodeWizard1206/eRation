@@ -2,12 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_ration/COMPONENTS/back_app_bar.dart';
 import 'package:e_ration/COMPONENTS/circle_picture.dart';
 import 'package:e_ration/COMPONENTS/input_field.dart';
+import 'package:e_ration/COMPONENTS/query_box.dart';
 import 'package:e_ration/MODELS/cart_model.dart';
 import 'package:e_ration/MODELS/constants.dart';
+import 'package:e_ration/MODELS/database_model.dart';
 import 'package:e_ration/MODELS/product_model.dart';
+import 'package:e_ration/MODELS/query_model.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductInfo extends StatefulWidget {
   final ProductModel product;
@@ -155,6 +159,155 @@ class _ProductInfoState extends State<ProductInfo> {
                         title: "Product Description",
                         maxLines: 100,
                         enabled: false,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 12.0,
+                        ),
+                        child: Text(
+                          'Customer Queries',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: RawMaterialButton(
+                          onPressed: () {
+                            TextEditingController _controller =
+                                TextEditingController();
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (_) => AlertDialog(
+                                title: Text(
+                                  'Ask Query...',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                content: TextFormField(
+                                  autofocus: true,
+                                  controller: _controller,
+                                  cursorColor:
+                                      Theme.of(context).primaryColorLight,
+                                  decoration: InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 0.7,
+                                        color:
+                                            Theme.of(context).primaryColorDark,
+                                      ),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 1.5,
+                                        color:
+                                            Theme.of(context).primaryColorDark,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(_).pop();
+                                    },
+                                    child: Text(
+                                      'Close',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16.0,
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      if (_controller.text.isNotEmpty) {
+                                        print(widget.product.uid);
+                                        QueryModel query = QueryModel(
+                                          question: _controller.text,
+                                          askedBy: Constant.getUser.name,
+                                          timestamp: DateTime.now(),
+                                        );
+
+                                        bool _result = await DatabaseManager
+                                            .getInstance
+                                            .askQuery(
+                                                widget.product.uid!, query);
+
+                                        if (_result) {
+                                          Navigator.of(_).pop();
+                                          Fluttertoast.showToast(
+                                            msg: 'Query Asked',
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.white,
+                                            textColor: Colors.black87,
+                                          );
+                                        } else
+                                          Fluttertoast.showToast(
+                                            msg: 'Error Occured',
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.white,
+                                            textColor: Colors.black87,
+                                          );
+                                      }
+                                    },
+                                    child: Text(
+                                      'Ask',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.0,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          splashColor: Theme.of(context).primaryColorLight,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            side: BorderSide(
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                          ),
+                          child: Container(
+                            width: double.maxFinite,
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              'Ask Query',
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                            alignment: Alignment.center,
+                          ),
+                        ),
+                      ),
+                      FutureBuilder<List<QueryModel>>(
+                        future: DatabaseManager.getInstance
+                            .getQueries(widget.product.uid!),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            if (snapshot.hasData) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: snapshot.data!
+                                    .map((query) => QueryBox(
+                                          query: query,
+                                        ))
+                                    .toList(),
+                              );
+                            }
+                          }
+
+                          return SizedBox();
+                        },
                       ),
                       SizedBox(height: 100.0),
                     ],

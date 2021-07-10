@@ -5,6 +5,7 @@ import 'package:e_ration/MODELS/cart_model.dart';
 import 'package:e_ration/MODELS/constants.dart';
 import 'package:e_ration/MODELS/order_model.dart';
 import 'package:e_ration/MODELS/product_model.dart';
+import 'package:e_ration/MODELS/query_model.dart';
 import 'package:e_ration/MODELS/seller_order_model.dart';
 import 'package:e_ration/MODELS/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -300,7 +301,7 @@ class DatabaseManager {
 
     DateTime _now = DateTime.now();
     try {
-      var _user = await FirebaseFirestore.instance
+      var _user = await _firestore
           .collection(_userDB)
           .where('contact', isEqualTo: Constant.getUser.contact)
           .get();
@@ -315,7 +316,7 @@ class DatabaseManager {
         products: Constant.cartItems.map((cart) => cart.product).toList(),
       );
 
-      var _doc = await FirebaseFirestore.instance
+      var _doc = await _firestore
           .collection(_userDB)
           .doc(_uid)
           .collection('myOrders')
@@ -334,17 +335,17 @@ class DatabaseManager {
           product: i.product,
         );
 
-        await FirebaseFirestore.instance
+        await _firestore
             .collection(_sellerDB)
             .doc(i.product.sellerId)
             .collection('orders')
             .add(_sellerorder.toMap());
 
-        var _data = await FirebaseFirestore.instance
+        var _data = await _firestore
             .collection('productDatabase')
             .doc(i.product.uid)
             .get();
-        await FirebaseFirestore.instance
+        await _firestore
             .collection('productDatabase')
             .doc(i.product.uid)
             .update({
@@ -362,7 +363,7 @@ class DatabaseManager {
   }
 
   Stream<List<OrderModel>> getMyOrders() {
-    var _data = FirebaseFirestore.instance
+    var _data = _firestore
         .collection(_userDB)
         .doc(Constant.getUser.uid!)
         .collection('myOrders')
@@ -371,5 +372,40 @@ class DatabaseManager {
             query.docs.map((doc) => OrderModel.fromDoc(doc)).toList());
 
     return _data;
+  }
+
+  Future<List<QueryModel>> getQueries(String uid) async {
+    try {
+      var _data = await _firestore
+          .collection(_productDB)
+          .doc(uid)
+          .collection('query')
+          .orderBy('timestamp', descending: true)
+          .get();
+
+      return _data.docs.map((snap) => QueryModel.fromDoc(snap)).toList();
+    } catch (ex) {
+      print(ex.toString());
+      return [];
+    }
+  }
+
+  Future<bool> askQuery(String uid, QueryModel query) async {
+    try {
+      await _firestore
+          .collection(_productDB)
+          .doc(uid)
+          .collection('query')
+          .add(query.toMap());
+
+      await _firestore
+          .collection(_productDB)
+          .doc(uid)
+          .update({'lastQuery': DateTime.now()});
+      return true;
+    } catch (ex) {
+      print(ex.toString());
+      return false;
+    }
   }
 }

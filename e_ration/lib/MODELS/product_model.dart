@@ -14,6 +14,7 @@ class ProductModel {
   String? description;
   String? thumbUri;
   DateTime? timestamp;
+  DateTime? lastQuery;
   int? stocks;
   int? price;
   List<String>? images;
@@ -30,6 +31,7 @@ class ProductModel {
     this.description,
     this.thumbUri,
     this.timestamp,
+    this.lastQuery,
     this.stocks,
     this.price,
     this.images,
@@ -47,6 +49,7 @@ class ProductModel {
     String? description,
     String? thumbUri,
     DateTime? timestamp,
+    DateTime? lastQuery,
     int? stocks,
     int? price,
     List<String>? images,
@@ -63,6 +66,7 @@ class ProductModel {
       description: description ?? this.description,
       thumbUri: thumbUri ?? this.thumbUri,
       timestamp: timestamp ?? this.timestamp,
+      lastQuery: lastQuery ?? this.lastQuery,
       stocks: stocks ?? this.stocks,
       price: price ?? this.price,
       images: images ?? this.images,
@@ -81,6 +85,7 @@ class ProductModel {
       'description': description,
       'thumbUri': thumbUri,
       'timestamp': timestamp,
+      'lastQuery': lastQuery,
       'stocks': stocks,
       'price': price,
       'images': images,
@@ -88,6 +93,7 @@ class ProductModel {
   }
 
   factory ProductModel.fromDoc(DocumentSnapshot doc) {
+    Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
     return ProductModel(
       uid: doc.id,
       sellerId: doc.get('sellerId'),
@@ -100,6 +106,9 @@ class ProductModel {
       description: doc.get('description'),
       thumbUri: doc.get('thumbUri'),
       timestamp: doc.get('timestamp').toDate(),
+      lastQuery: map['lastQuery'] != null
+          ? doc.get('lastQuery').toDate()
+          : DateTime.now(),
       stocks: doc.get('stocks'),
       price: doc.get('price'),
       images: List<String>.from(doc.get('images')),
@@ -119,6 +128,7 @@ class ProductModel {
       description: map['description'],
       thumbUri: map['thumbUri'],
       timestamp: map['timestamp'].toDate(),
+      lastQuery: map['lastQuery'].toDate(),
       stocks: map['stocks'],
       price: map['price'],
       images: List<String>.from(map['images']),
@@ -151,6 +161,7 @@ class ProductModel {
         other.description == description &&
         other.thumbUri == thumbUri &&
         other.timestamp == timestamp &&
+        other.lastQuery == lastQuery &&
         other.stocks == stocks &&
         other.price == price &&
         listEquals(other.images, images);
@@ -169,6 +180,7 @@ class ProductModel {
         description.hashCode ^
         thumbUri.hashCode ^
         timestamp.hashCode ^
+        lastQuery.hashCode ^
         stocks.hashCode ^
         price.hashCode ^
         images.hashCode;

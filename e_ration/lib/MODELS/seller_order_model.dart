@@ -10,6 +10,7 @@ class SellerOrderModel {
   String? email;
   String? contact;
   String? profile;
+  String? status;
   DateTime? timestamp;
   DateTime? date;
   String? time;
@@ -20,6 +21,7 @@ class SellerOrderModel {
     this.orderId,
     this.name,
     this.email,
+    this.status = 'Not Picked',
     this.contact,
     this.profile,
     this.timestamp,
@@ -32,6 +34,7 @@ class SellerOrderModel {
     String? uid,
     String? orderId,
     String? name,
+    String? status,
     String? email,
     String? contact,
     String? profile,
@@ -45,6 +48,7 @@ class SellerOrderModel {
       orderId: orderId ?? this.orderId,
       name: name ?? this.name,
       email: email ?? this.email,
+      status: status ?? this.status,
       contact: contact ?? this.contact,
       profile: profile ?? this.profile,
       timestamp: timestamp ?? this.timestamp,
@@ -61,6 +65,7 @@ class SellerOrderModel {
       'name': name,
       'email': email,
       'contact': contact,
+      'status': status,
       'profile': profile,
       'timestamp': timestamp,
       'date': date,
@@ -76,6 +81,7 @@ class SellerOrderModel {
       orderId: map['orderId'],
       name: map['name'],
       email: map['email'],
+      status: map['status'] ?? 'Not Picked',
       contact: map['contact'],
       profile: map['profile'],
       timestamp: map['timestamp'].toDate(),
@@ -91,6 +97,7 @@ class SellerOrderModel {
       orderId: map['orderId'],
       name: map['name'],
       email: map['email'],
+      status: map['status'],
       contact: map['contact'],
       profile: map['profile'],
       timestamp: map['timestamp'].toDate(),
@@ -107,7 +114,7 @@ class SellerOrderModel {
 
   @override
   String toString() {
-    return 'SellerOrderModel(uid: $uid, orderId: $orderId, name: $name, email: $email, contact: $contact, profile: $profile, timestamp: $timestamp, date: $date, time: $time, product: $product)';
+    return 'SellerOrderModel(uid: $uid, orderId: $orderId, name: $name, email: $email, status: $status, contact: $contact, profile: $profile, timestamp: $timestamp, date: $date, time: $time, product: $product)';
   }
 
   @override
@@ -119,6 +126,7 @@ class SellerOrderModel {
         other.orderId == orderId &&
         other.name == name &&
         other.email == email &&
+        other.status == status &&
         other.contact == contact &&
         other.profile == profile &&
         other.timestamp == timestamp &&
@@ -133,6 +141,7 @@ class SellerOrderModel {
         orderId.hashCode ^
         name.hashCode ^
         email.hashCode ^
+        status.hashCode ^
         contact.hashCode ^
         profile.hashCode ^
         timestamp.hashCode ^

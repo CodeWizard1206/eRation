@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
@@ -10,10 +9,12 @@ class ProductModel {
   String? sellerCity;
   String? sellerArea;
   String? productName;
+  int? rating;
   String? category;
   String? description;
   String? thumbUri;
   DateTime? timestamp;
+  DateTime? lastQuery;
   int? stocks;
   int? price;
   List<String>? images;
@@ -23,12 +24,14 @@ class ProductModel {
     this.sellerId,
     this.sellerName,
     this.sellerCity,
+    this.rating = 0,
     this.sellerArea,
     this.productName,
     this.category,
     this.description,
     this.thumbUri,
     this.timestamp,
+    this.lastQuery,
     this.stocks,
     this.price,
     this.images,
@@ -40,11 +43,13 @@ class ProductModel {
     String? sellerName,
     String? sellerCity,
     String? sellerArea,
+    int? rating,
     String? productName,
     String? category,
     String? description,
     String? thumbUri,
     DateTime? timestamp,
+    DateTime? lastQuery,
     int? stocks,
     int? price,
     List<String>? images,
@@ -52,6 +57,7 @@ class ProductModel {
     return ProductModel(
       uid: uid ?? this.uid,
       sellerId: sellerId ?? this.sellerId,
+      rating: rating ?? this.rating,
       sellerName: sellerName ?? this.sellerName,
       sellerCity: sellerCity ?? this.sellerCity,
       sellerArea: sellerArea ?? this.sellerArea,
@@ -60,6 +66,7 @@ class ProductModel {
       description: description ?? this.description,
       thumbUri: thumbUri ?? this.thumbUri,
       timestamp: timestamp ?? this.timestamp,
+      lastQuery: lastQuery ?? this.lastQuery,
       stocks: stocks ?? this.stocks,
       price: price ?? this.price,
       images: images ?? this.images,
@@ -69,6 +76,7 @@ class ProductModel {
   Map<String, dynamic> toMap() {
     return {
       'sellerId': sellerId,
+      'rating': rating,
       'sellerName': sellerName,
       'sellerCity': sellerCity,
       'sellerArea': sellerArea,
@@ -77,6 +85,7 @@ class ProductModel {
       'description': description,
       'thumbUri': thumbUri,
       'timestamp': timestamp,
+      'lastQuery': lastQuery,
       'stocks': stocks,
       'price': price,
       'images': images,
@@ -87,6 +96,7 @@ class ProductModel {
     return ProductModel(
       uid: doc.id,
       sellerId: doc.get('sellerId'),
+      rating: doc.get('rating'),
       sellerName: doc.get('sellerName'),
       sellerCity: doc.get('sellerCity'),
       sellerArea: doc.get('sellerArea'),
@@ -95,6 +105,7 @@ class ProductModel {
       description: doc.get('description'),
       thumbUri: doc.get('thumbUri'),
       timestamp: doc.get('timestamp').toDate(),
+      lastQuery: doc.get('lastQuery').toDate(),
       stocks: doc.get('stocks'),
       price: doc.get('price'),
       images: List<String>.from(doc.get('images')),
@@ -103,8 +114,9 @@ class ProductModel {
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
-      uid: map['uid'],
+      // uid: map['uid'],
       sellerId: map['sellerId'],
+      rating: map['rating'],
       sellerName: map['sellerName'],
       sellerCity: map['sellerCity'],
       sellerArea: map['sellerArea'],
@@ -113,6 +125,7 @@ class ProductModel {
       description: map['description'],
       thumbUri: map['thumbUri'],
       timestamp: map['timestamp'].toDate(),
+      lastQuery: map['lastQuery'].toDate(),
       stocks: map['stocks'],
       price: map['price'],
       images: List<String>.from(map['images']),
@@ -126,7 +139,7 @@ class ProductModel {
 
   @override
   String toString() {
-    return 'ProductModel(uid: $uid, sellerId: $sellerId, sellerName: $sellerName, sellerCity: $sellerCity, sellerArea: $sellerArea, productName: $productName, category: $category, description: $description, thumbUri: $thumbUri, timestamp: $timestamp, stocks: $stocks, price: $price, images: $images)';
+    return 'ProductModel(uid: $uid, sellerId: $sellerId, rating: $rating, sellerName: $sellerName, sellerCity: $sellerCity, sellerArea: $sellerArea, productName: $productName, category: $category, description: $description, thumbUri: $thumbUri, timestamp: $timestamp, stocks: $stocks, price: $price, images: $images)';
   }
 
   @override
@@ -135,6 +148,7 @@ class ProductModel {
 
     return other is ProductModel &&
         other.uid == uid &&
+        other.rating == rating &&
         other.sellerId == sellerId &&
         other.sellerName == sellerName &&
         other.sellerCity == sellerCity &&
@@ -144,6 +158,7 @@ class ProductModel {
         other.description == description &&
         other.thumbUri == thumbUri &&
         other.timestamp == timestamp &&
+        other.lastQuery == lastQuery &&
         other.stocks == stocks &&
         other.price == price &&
         listEquals(other.images, images);
@@ -152,6 +167,7 @@ class ProductModel {
   @override
   int get hashCode {
     return uid.hashCode ^
+        rating.hashCode ^
         sellerId.hashCode ^
         sellerName.hashCode ^
         sellerCity.hashCode ^
@@ -161,6 +177,7 @@ class ProductModel {
         description.hashCode ^
         thumbUri.hashCode ^
         timestamp.hashCode ^
+        lastQuery.hashCode ^
         stocks.hashCode ^
         price.hashCode ^
         images.hashCode;

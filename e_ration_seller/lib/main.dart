@@ -1,3 +1,4 @@
+import 'package:e_ration_seller/MODELS/category_model.dart';
 import 'package:e_ration_seller/MODELS/contants.dart';
 import 'package:e_ration_seller/MODELS/database_model.dart';
 import 'package:e_ration_seller/PAGES/dashboard.dart';
@@ -20,6 +21,7 @@ void main() async {
 
   if (Constant.isLoggedIn!) {
     Constant.setUser = await DatabaseManager.getInstance.getUser(_cache);
+    await DatabaseManager.getInstance.getCategories();
   }
 
   await SystemChrome.setPreferredOrientations(

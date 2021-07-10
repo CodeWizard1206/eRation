@@ -6,6 +6,7 @@ import 'package:e_ration_seller/COMPONENTS/circle_picture.dart';
 import 'package:e_ration_seller/COMPONENTS/drop_down.dart';
 import 'package:e_ration_seller/COMPONENTS/icon_button.dart';
 import 'package:e_ration_seller/COMPONENTS/input_field.dart';
+import 'package:e_ration_seller/MODELS/category_model.dart';
 import 'package:e_ration_seller/MODELS/contants.dart';
 import 'package:e_ration_seller/MODELS/database_model.dart';
 import 'package:e_ration_seller/MODELS/product_model.dart';
@@ -118,7 +119,7 @@ class _ProductInfoState extends State<ProductInfo> {
         child: ListView(
           // controller: _controller,
           children: [
-            BackAppBar(title: 'Add Product'),
+            BackAppBar(title: 'Product'),
             Builder(
               builder: (context) => AnimatedContainer(
                 duration: Duration(
