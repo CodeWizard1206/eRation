@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_ration_seller/MODELS/category_model.dart';
 import 'package:e_ration_seller/MODELS/contants.dart';
 import 'package:e_ration_seller/MODELS/product_model.dart';
+import 'package:e_ration_seller/MODELS/query_model.dart';
 import 'package:e_ration_seller/MODELS/seller_order_model.dart';
 import 'package:e_ration_seller/MODELS/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -124,15 +125,14 @@ class DatabaseManager {
     return _return;
   }
 
-  Stream<int> getProductsCount() {
-    Stream<int> _return = _firestore
+  Future<int> getProductsCount() async {
+    var _data = await _firestore
         .collection(_productDB)
         .where('sellerId', isEqualTo: Constant.getUser.uid)
         .where('stocks', isGreaterThan: 0)
-        .snapshots()
-        .map((event) => event.docs.length);
+        .get();
 
-    return _return;
+    return _data.docs.length;
   }
 
   Stream<List<ProductModel>> getProducts() {
@@ -148,16 +148,30 @@ class DatabaseManager {
     return _return;
   }
 
-  Stream<int> getQueries() {
-    Stream<int> _return = _firestore
-        .collection(_sellerDB)
-        .doc(Constant.getUser.uid)
-        .collection(_queriesColl)
-        .where('answered', isEqualTo: true)
-        .snapshots()
-        .map((event) => event.docs.length);
+  Future<int> getQueriesCount() async {
+    var _return = await _firestore
+        .collection(_productDB)
+        .where('sellerId', isEqualTo: Constant.getUser.uid)
+        .orderBy('lastQuery', descending: true)
+        .get();
 
-    return _return;
+    var _list = _return.docs;
+    int counter = 0;
+
+    for (int i = 0; i < _list.length; ++i) {
+      _list[i].data();
+
+      var _data = await _firestore
+          .collection(_productDB)
+          .doc(_list[i].id)
+          .collection('query')
+          .where('answer', isNull: true)
+          .get();
+
+      counter += _data.docs.length;
+    }
+
+    return counter;
   }
 
   Future<void> deleteProfileImage() async {
@@ -322,5 +336,45 @@ class DatabaseManager {
     });
 
     return _ret;
+  }
+
+  Stream<List<ProductModel>> getQueryProduct() {
+    var _return = _firestore
+        .collection(_productDB)
+        .where('sellerId', isEqualTo: Constant.getUser.uid)
+        .orderBy('lastQuery', descending: true)
+        .snapshots()
+        .map(
+            (event) => event.docs.map((e) => ProductModel.fromDoc(e)).toList());
+
+    return _return;
+  }
+
+  Stream<List<QueryModel>> getQuery(String uid) {
+    var _data = _firestore
+        .collection(_productDB)
+        .doc(uid)
+        .collection('query')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map(
+            (snap) => snap.docs.map((doc) => QueryModel.fromDoc(doc)).toList());
+
+    return _data;
+  }
+
+  Future<bool> answerQuery(String uid, String qid, String answer) async {
+    try {
+      await _firestore
+          .collection(_productDB)
+          .doc(uid)
+          .collection('query')
+          .doc(qid)
+          .update({'answer': answer});
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
   }
 }

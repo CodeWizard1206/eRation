@@ -93,6 +93,7 @@ class ProductModel {
   }
 
   factory ProductModel.fromDoc(DocumentSnapshot doc) {
+    Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
     return ProductModel(
       uid: doc.id,
       sellerId: doc.get('sellerId'),
@@ -105,7 +106,8 @@ class ProductModel {
       description: doc.get('description'),
       thumbUri: doc.get('thumbUri'),
       timestamp: doc.get('timestamp').toDate(),
-      lastQuery: doc.get('lastQuery').toDate(),
+      lastQuery:
+          map['lastQuery'] != null ? map['lastQuery'].toDate() : DateTime.now(),
       stocks: doc.get('stocks'),
       price: doc.get('price'),
       images: List<String>.from(doc.get('images')),
@@ -125,7 +127,8 @@ class ProductModel {
       description: map['description'],
       thumbUri: map['thumbUri'],
       timestamp: map['timestamp'].toDate(),
-      lastQuery: map['lastQuery'].toDate(),
+      lastQuery:
+          map['lastQuery'] != null ? map['lastQuery'].toDate() : DateTime.now(),
       stocks: map['stocks'],
       price: map['price'],
       images: List<String>.from(map['images']),

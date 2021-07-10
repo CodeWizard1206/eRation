@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class DataInfoCard extends StatelessWidget {
   final String? title;
   final IconData? icon;
-  final Stream<int>? stream;
+  final Future<int>? future;
   const DataInfoCard({
     Key? key,
     this.title,
     this.icon,
-    this.stream,
+    this.future,
   }) : super(key: key);
 
   @override
@@ -16,13 +16,13 @@ class DataInfoCard extends StatelessWidget {
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(8.0),
-        child: StreamBuilder<int>(
-            stream: this.stream,
+        child: FutureBuilder<int>(
+            future: this.future,
             builder: (context, snapshot) {
               int _count = 401;
 
-              if (snapshot.connectionState != ConnectionState.none) {
-                if (snapshot.data != null) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
                   _count = snapshot.data as int;
                 }
               }

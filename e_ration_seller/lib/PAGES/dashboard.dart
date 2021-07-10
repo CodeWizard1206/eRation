@@ -27,12 +27,12 @@ class Dashboard extends StatelessWidget {
               DataInfoCard(
                 title: 'Prodcuts',
                 icon: FlutterIcons.shopping_cart_ent,
-                stream: DatabaseManager.getInstance.getProductsCount(),
+                future: DatabaseManager.getInstance.getProductsCount(),
               ),
               DataInfoCard(
                 title: 'Queries',
                 icon: FlutterIcons.chat_bubble_mdi,
-                stream: DatabaseManager.getInstance.getQueries(),
+                future: DatabaseManager.getInstance.getQueriesCount(),
               ),
             ],
           ),

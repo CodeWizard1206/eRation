@@ -76,6 +76,7 @@ class SellerOrderModel {
 
   factory SellerOrderModel.fromDoc(DocumentSnapshot doc) {
     Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
+    // print(map);
     return SellerOrderModel(
       uid: doc.id,
       orderId: map['orderId'],
