@@ -128,7 +128,8 @@ class ProductModel {
       description: map['description'],
       thumbUri: map['thumbUri'],
       timestamp: map['timestamp'].toDate(),
-      lastQuery: map['lastQuery'].toDate(),
+      lastQuery:
+          map['lastQuery'] != null ? map['lastQuery'].toDate() : DateTime.now(),
       stocks: map['stocks'],
       price: map['price'],
       images: List<String>.from(map['images']),
