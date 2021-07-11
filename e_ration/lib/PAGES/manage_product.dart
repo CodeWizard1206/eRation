@@ -23,6 +23,10 @@ class ManageProduct extends StatefulWidget {
 }
 
 class _ManageProductState extends State<ManageProduct> {
+  Set<String> _storeList = {};
+  bool _filtered = false;
+  String? _filteredString;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +71,20 @@ class _ManageProductState extends State<ManageProduct> {
                       )
                       .toList();
                 }
+
+                _storeList.clear();
+                _storeList = {'Select None'};
+                _data.forEach((element) {
+                  _storeList.add(element.sellerName!);
+                });
+
+                if (_filtered) {
+                  _data = _data
+                      .where((element) => element.sellerName == _filteredString)
+                      .toList();
+
+                  print(_filtered);
+                }
                 if (_data.length > 0) {
                   return ListView(
                     children: [
@@ -98,6 +116,70 @@ class _ManageProductState extends State<ManageProduct> {
               child: AsyncLoader(),
             );
           }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (_) => Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colors.blueGrey[100],
+                  ),
+                  margin: const EdgeInsets.all(8.0),
+                  child: SizedBox(),
+                  height: 5.0,
+                  width: 30.0,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Select a Store',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView(
+                    children: _storeList
+                        .map(
+                          (e) => ListTile(
+                            onTap: () {
+                              if (e == 'Select None') {
+                                setState(() {
+                                  _filtered = false;
+                                });
+                              } else {
+                                setState(() {
+                                  _filteredString = e;
+                                  _filtered = true;
+                                });
+                              }
+                              Navigator.of(_).pop();
+                            },
+                            title: Text(
+                              e,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        child: Icon(
+          FlutterIcons.filter_faw5s,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }

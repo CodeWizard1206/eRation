@@ -150,6 +150,16 @@ class ProductCard extends StatelessWidget {
                         ),
                       ],
                     ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(
+                          productData.sellerName!,
+                          style: TextStyle(fontSize: 16.0),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
