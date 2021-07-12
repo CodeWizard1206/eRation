@@ -448,7 +448,7 @@ class _ProfileViewState extends State<ProfileView> {
                         onPressed: () {
                           DatabaseManager.getInstance.logoutUser();
                           Navigator.popUntil(context, ModalRoute.withName('/'));
-                          Navigator.pushNamed(context, '/');
+                          Navigator.popAndPushNamed(context, '/');
                         },
                         fillColor: Theme.of(context).primaryColorDark,
                         shape: RoundedRectangleBorder(
