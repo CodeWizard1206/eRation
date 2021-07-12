@@ -408,4 +408,29 @@ class DatabaseManager {
       return false;
     }
   }
+
+  Stream<List<String>> getNearbySellers() {
+    var _data = _firestore
+        .collection(_sellerDB)
+        .where('area', isEqualTo: Constant.getUser.area)
+        .orderBy('shopName')
+        .snapshots()
+        .map((event) =>
+            event.docs.map((doc) => doc.get('shopName').toString()).toList());
+
+    return _data;
+  }
+
+  Stream<List<ProductModel>> getSellerProducts(String shopName) {
+    var _data = _firestore
+        .collection(_productDB)
+        .where('sellerName', isEqualTo: shopName)
+        .where('stocks', isGreaterThan: 0)
+        .snapshots()
+        .map(
+          (snap) => snap.docs.map((doc) => ProductModel.fromDoc(doc)).toList(),
+        );
+
+    return _data;
+  }
 }

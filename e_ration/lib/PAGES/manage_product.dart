@@ -12,10 +12,14 @@ import 'package:flutter_icons/flutter_icons.dart';
 class ManageProduct extends StatefulWidget {
   final String? category;
   final String? search;
+  final bool? filtered;
+  final String? filterString;
   ManageProduct({
     Key? key,
     this.category,
     this.search,
+    this.filtered = false,
+    this.filterString,
   }) : super(key: key);
 
   @override
@@ -23,9 +27,17 @@ class ManageProduct extends StatefulWidget {
 }
 
 class _ManageProductState extends State<ManageProduct> {
-  Set<String> _storeList = {};
-  bool _filtered = false;
+  Set<String>? _storeList;
+  bool? _filtered;
   String? _filteredString;
+
+  @override
+  void initState() {
+    _storeList = {};
+    _filtered = widget.filtered;
+    _filteredString = widget.filterString;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,52 +45,63 @@ class _ManageProductState extends State<ManageProduct> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80),
         child: CustomAppBar(
-          title: this.widget.category != null
-              ? this.widget.category
-              : 'Search Results',
+          title: widget.filtered!
+              ? 'Products'
+              : this.widget.category != null
+                  ? this.widget.category
+                  : 'Search Results',
           isBackNeeded: true,
         ),
       ),
       body: StreamBuilder<List<ProductModel>>(
-          stream: this.widget.category != null
+          stream: widget.filtered!
               ? DatabaseManager.getInstance
-                  .getProductsWhereCategory(this.widget.category!)
-              : DatabaseManager.getInstance.getProducts(),
+                  .getSellerProducts(widget.filterString!)
+              : this.widget.category != null
+                  ? DatabaseManager.getInstance
+                      .getProductsWhereCategory(this.widget.category!)
+                  : DatabaseManager.getInstance.getProducts(),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.none) {
               if (snapshot.data != null) {
                 List<ProductModel> _data;
-                if (this.widget.category != null) {
-                  _data = snapshot.data!
-                      .where(
-                        (element) =>
-                            element.sellerArea == Constant.getUser.area &&
-                            element.stocks! > 0,
-                      )
-                      .toList();
+                if (widget.filtered!) {
+                  _data = snapshot.data!;
+                  _data.sort((a, b) => a.sellerName!.compareTo(b.sellerName!));
                 } else {
-                  _data = snapshot.data!
-                      .where(
-                        (element) => (element.sellerArea ==
-                                Constant.getUser.area &&
-                            element.stocks! > 0 &&
-                            (element.productName!.toLowerCase().contains(
-                                    this.widget.search!.toLowerCase()) ||
-                                element.category!.toLowerCase().contains(
-                                    this.widget.search!.toLowerCase()) ||
-                                element.description!.toLowerCase().contains(
-                                    this.widget.search!.toLowerCase()))),
-                      )
-                      .toList();
+                  if (this.widget.category != null) {
+                    _data = snapshot.data!
+                        .where(
+                          (element) =>
+                              element.sellerArea == Constant.getUser.area &&
+                              element.stocks! > 0,
+                        )
+                        .toList();
+                  } else {
+                    _data = snapshot.data!
+                        .where(
+                          (element) => (element.sellerArea ==
+                                  Constant.getUser.area &&
+                              element.stocks! > 0 &&
+                              (element.productName!.toLowerCase().contains(
+                                      this.widget.search!.toLowerCase()) ||
+                                  element.category!.toLowerCase().contains(
+                                      this.widget.search!.toLowerCase()) ||
+                                  element.description!.toLowerCase().contains(
+                                      this.widget.search!.toLowerCase()))),
+                        )
+                        .toList();
+                  }
                 }
 
-                _storeList.clear();
+                _storeList!.clear();
                 _storeList = {'Select None'};
+
                 _data.forEach((element) {
-                  _storeList.add(element.sellerName!);
+                  _storeList!.add(element.sellerName!);
                 });
 
-                if (_filtered) {
+                if (_filtered!) {
                   _data = _data
                       .where((element) => element.sellerName == _filteredString)
                       .toList();
@@ -116,70 +139,72 @@ class _ManageProductState extends State<ManageProduct> {
               child: AsyncLoader(),
             );
           }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (_) => Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    color: Colors.blueGrey[100],
-                  ),
-                  margin: const EdgeInsets.all(8.0),
-                  child: SizedBox(),
-                  height: 5.0,
-                  width: 30.0,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Select a Store',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: ListView(
-                    children: _storeList
-                        .map(
-                          (e) => ListTile(
-                            onTap: () {
-                              if (e == 'Select None') {
-                                setState(() {
-                                  _filtered = false;
-                                });
-                              } else {
-                                setState(() {
-                                  _filteredString = e;
-                                  _filtered = true;
-                                });
-                              }
-                              Navigator.of(_).pop();
-                            },
-                            title: Text(
-                              e,
-                              style: TextStyle(
-                                fontSize: 18.0,
-                              ),
-                            ),
+      floatingActionButton: widget.filtered!
+          ? null
+          : FloatingActionButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (_) => Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Colors.blueGrey[100],
+                        ),
+                        margin: const EdgeInsets.all(8.0),
+                        child: SizedBox(),
+                        height: 5.0,
+                        width: 30.0,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Select a Store',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
                           ),
-                        )
-                        .toList(),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView(
+                          children: _storeList!
+                              .map(
+                                (e) => ListTile(
+                                  onTap: () {
+                                    if (e == 'Select None') {
+                                      setState(() {
+                                        _filtered = false;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        _filteredString = e;
+                                        _filtered = true;
+                                      });
+                                    }
+                                    Navigator.of(_).pop();
+                                  },
+                                  title: Text(
+                                    e,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                );
+              },
+              child: Icon(
+                FlutterIcons.filter_faw5s,
+                color: Colors.white,
+              ),
             ),
-          );
-        },
-        child: Icon(
-          FlutterIcons.filter_faw5s,
-          color: Colors.white,
-        ),
-      ),
     );
   }
 }
