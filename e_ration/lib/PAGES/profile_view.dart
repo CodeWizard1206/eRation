@@ -441,6 +441,35 @@ class _ProfileViewState extends State<ProfileView> {
                   ],
                 ),
               ),
+              !_isEditable!
+                  ? Container(
+                      padding: const EdgeInsets.all(10.0),
+                      child: RawMaterialButton(
+                        onPressed: () {
+                          DatabaseManager.getInstance.logoutUser();
+                          Navigator.popUntil(context, ModalRoute.withName('/'));
+                          Navigator.pushNamed(context, '/');
+                        },
+                        fillColor: Theme.of(context).primaryColorDark,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Container(
+                          margin: const EdgeInsets.all(10.0),
+                          width: double.maxFinite,
+                          child: Text(
+                            'Log Out',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 32.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
               SizedBox(height: 80.0),
             ],
           ),

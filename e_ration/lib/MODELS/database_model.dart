@@ -40,6 +40,8 @@ class DatabaseManager {
     _cache.setBool('loggedIn', false);
     Constant.setUser = UserModel();
     Constant.isLoggedIn = false;
+    Constant.cartItems = [];
+
     _auth.signOut();
   }
 
