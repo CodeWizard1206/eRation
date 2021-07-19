@@ -43,9 +43,9 @@ class CustomAppBar extends StatelessWidget {
                 ),
               ),
               Text(
-                this.title.toString(),
+                'eRation - Seller', // this.title.toString(),
                 style: TextStyle(
-                  fontSize: 42.0,
+                  fontSize: 35.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),

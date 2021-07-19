@@ -1,7 +1,6 @@
 import 'package:e_ration_seller/COMPONENTS/back_app_bar.dart';
 import 'package:e_ration_seller/COMPONENTS/drop_down.dart';
 import 'package:e_ration_seller/COMPONENTS/order_product_card.dart';
-import 'package:e_ration_seller/COMPONENTS/product_card.dart';
 import 'package:e_ration_seller/MODELS/database_model.dart';
 import 'package:e_ration_seller/MODELS/seller_order_model.dart';
 import 'package:flutter/material.dart';

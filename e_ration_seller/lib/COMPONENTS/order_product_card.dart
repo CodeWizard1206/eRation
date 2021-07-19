@@ -83,7 +83,12 @@ class OrderProductCard extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: SizedBox(),
+                          child: Text(
+                            'Qty: ${productData.qty} KG\'s',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
                         ),
                         RawMaterialButton(
                           constraints: BoxConstraints(

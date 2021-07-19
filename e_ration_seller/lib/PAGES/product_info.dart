@@ -1,12 +1,9 @@
-import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:e_ration_seller/COMPONENTS/async_loader.dart';
 import 'package:e_ration_seller/COMPONENTS/back_app_bar.dart';
 import 'package:e_ration_seller/COMPONENTS/circle_picture.dart';
 import 'package:e_ration_seller/COMPONENTS/drop_down.dart';
 import 'package:e_ration_seller/COMPONENTS/icon_button.dart';
 import 'package:e_ration_seller/COMPONENTS/input_field.dart';
-import 'package:e_ration_seller/MODELS/category_model.dart';
 import 'package:e_ration_seller/MODELS/contants.dart';
 import 'package:e_ration_seller/MODELS/database_model.dart';
 import 'package:e_ration_seller/MODELS/product_model.dart';
@@ -14,8 +11,6 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class ProductInfo extends StatefulWidget {
   final ProductModel product;
@@ -37,7 +32,7 @@ class _ProductInfoState extends State<ProductInfo> {
   List<String>? _images;
   DatabaseManager? _db;
 
-  bool? _isLoading;
+  // bool? _isLoading;
 
   @override
   void initState() {

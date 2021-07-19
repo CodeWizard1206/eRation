@@ -13,6 +13,7 @@ class ProductModel {
   String? category;
   String? description;
   String? thumbUri;
+  int qty;
   DateTime? timestamp;
   DateTime? lastQuery;
   int? stocks;
@@ -29,6 +30,7 @@ class ProductModel {
     this.productName,
     this.category,
     this.description,
+    this.qty = 0,
     this.thumbUri,
     this.timestamp,
     this.lastQuery,
@@ -127,6 +129,7 @@ class ProductModel {
       description: map['description'],
       thumbUri: map['thumbUri'],
       timestamp: map['timestamp'].toDate(),
+      qty: map['qty'] != null ? map['qty'] : 0,
       lastQuery:
           map['lastQuery'] != null ? map['lastQuery'].toDate() : DateTime.now(),
       stocks: map['stocks'],

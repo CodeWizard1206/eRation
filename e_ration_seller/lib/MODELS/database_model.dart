@@ -23,7 +23,7 @@ class DatabaseManager {
   final String _sellerDB = 'sellerDatabase';
   final String _reviewColl = 'userReviews';
   final String _productDB = 'productDatabase';
-  final String _queriesColl = 'userQueries';
+  // final String _queriesColl = 'userQueries';
 
   //Store login data in cache for auto relogin.
   void _storeCache() async {
