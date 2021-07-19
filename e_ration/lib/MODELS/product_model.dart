@@ -15,6 +15,7 @@ class ProductModel {
   String? thumbUri;
   DateTime? timestamp;
   DateTime? lastQuery;
+  int qty;
   int? stocks;
   int? price;
   List<String>? images;
@@ -25,6 +26,7 @@ class ProductModel {
     this.sellerName,
     this.sellerCity,
     this.rating = 0,
+    this.qty = 0,
     this.sellerArea,
     this.productName,
     this.category,
@@ -82,6 +84,7 @@ class ProductModel {
       'sellerArea': sellerArea,
       'productName': productName,
       'category': category,
+      'qty': qty,
       'description': description,
       'thumbUri': thumbUri,
       'timestamp': timestamp,
@@ -128,6 +131,7 @@ class ProductModel {
       description: map['description'],
       thumbUri: map['thumbUri'],
       timestamp: map['timestamp'].toDate(),
+      qty: map['qty'] != null ? map['qty'] : 0,
       lastQuery:
           map['lastQuery'] != null ? map['lastQuery'].toDate() : DateTime.now(),
       stocks: map['stocks'],

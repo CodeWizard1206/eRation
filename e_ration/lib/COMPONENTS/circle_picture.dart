@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class CirclePicture extends StatelessWidget {
   final ImageProvider<Object> backgroundImage;
+  final bool isProfile;
   const CirclePicture({
     Key? key,
+    this.isProfile = false,
     required this.backgroundImage,
   }) : super(key: key);
 
@@ -19,6 +21,7 @@ class CirclePicture extends StatelessWidget {
         ),
       ),
       child: CircleAvatar(
+        radius: this.isProfile ? 8 : 20,
         backgroundColor: Colors.transparent,
         backgroundImage: this.backgroundImage,
       ),

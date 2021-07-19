@@ -257,49 +257,14 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ModalProgressHUD(
-        inAsyncCall: this._isLoading,
-        opacity: 0.8,
-        progressIndicator: AsyncLoader(),
-        child: SafeArea(
-          child: ListView(
+    return ModalProgressHUD(
+      inAsyncCall: this._isLoading,
+      opacity: 0.8,
+      progressIndicator: AsyncLoader(),
+      child: Stack(
+        children: [
+          ListView(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18.0),
-                child: Stack(
-                  alignment: Alignment.centerLeft,
-                  children: [
-                    Container(
-                      width: double.maxFinite,
-                      child: Text(
-                        'Profile',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 36.0,
-                        ),
-                      ),
-                    ),
-                    RawMaterialButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      fillColor: Theme.of(context).primaryColorDark,
-                      splashColor: Theme.of(context).primaryColorLight,
-                      shape: CircleBorder(),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Icon(
-                          Icons.keyboard_arrow_left,
-                          color: Colors.white,
-                          size: 38,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.all(20),
@@ -473,21 +438,27 @@ class _ProfileViewState extends State<ProfileView> {
               SizedBox(height: 80.0),
             ],
           ),
-        ),
-      ),
-      floatingActionButton: Builder(
-        builder: (context) => FloatingActionButton(
-          onPressed: () async {
-            if (_isEditable!) await _makeEdits(context);
-            setState(() {
-              _isEditable = !_isEditable!;
-            });
-          },
-          child: Icon(
-            _isEditable! ? FlutterIcons.check_faw5s : FlutterIcons.edit_faw5s,
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: FloatingActionButton(
+                onPressed: () async {
+                  if (_isEditable!) await _makeEdits(context);
+                  setState(() {
+                    _isEditable = !_isEditable!;
+                  });
+                },
+                child: Icon(
+                  _isEditable!
+                      ? FlutterIcons.check_faw5s
+                      : FlutterIcons.edit_faw5s,
+                ),
+                heroTag: 'button',
+              ),
+            ),
           ),
-          heroTag: 'button',
-        ),
+        ],
       ),
     );
   }

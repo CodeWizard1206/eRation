@@ -26,13 +26,16 @@ class _ProductInfoState extends State<ProductInfo> {
   List<String>? _images;
   TextEditingController? _desc;
   CartModel? _cart;
+  TextEditingController? _qty;
   final List<int> _rateStar = [1, 2, 3, 4, 5];
 
   @override
   void initState() {
     _desc = TextEditingController();
+    _qty = TextEditingController();
 
     _desc!.text = widget.product.description!;
+    _qty!.text = '0';
     _images = this.widget.product.images;
     _currentFile = _images!.first;
 
@@ -160,6 +163,73 @@ class _ProductInfoState extends State<ProductInfo> {
                         maxLines: 100,
                         enabled: false,
                       ),
+                      StreamBuilder<int>(
+                          stream: DatabaseManager.getInstance
+                              .getStockUpdate(widget.product.uid!),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState !=
+                                ConnectionState.none) {
+                              if (snapshot.hasData) {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: InputField(
+                                        controller: _qty,
+                                        title: "Quatity (in KGs)",
+                                        maxLines: 1,
+                                        enabled: true,
+                                        keyboardType: TextInputType.number,
+                                        onChange: (value) {
+                                          if (int.parse(value) <=
+                                              snapshot.data!) {
+                                            this.widget.product.qty =
+                                                int.parse(value);
+                                          } else {
+                                            Fluttertoast.showToast(
+                                              msg: 'Invalid Value Entered!!!',
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.white,
+                                              textColor: Colors.black87,
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(width: 5.0),
+                                    Text(
+                                      '/ ${snapshot.data} KG\'s',
+                                      style: TextStyle(
+                                        fontSize: 28.0,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+                            }
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: InputField(
+                                    controller: _qty,
+                                    title: "Quatity (in KGs)",
+                                    maxLines: 1,
+                                    enabled: true,
+                                    keyboardType: TextInputType.number,
+                                  ),
+                                ),
+                                SizedBox(width: 5.0),
+                                Text(
+                                  '/ 0 KG\'s',
+                                  style: TextStyle(
+                                    fontSize: 28.0,
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10.0,

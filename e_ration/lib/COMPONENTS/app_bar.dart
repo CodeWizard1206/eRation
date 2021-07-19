@@ -87,28 +87,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.rightToLeft,
-                            child: ProfileView(),
-                          ),
-                        );
-                      },
-                      child: Hero(
-                        tag: 'ProfileViewer',
-                        child: CirclePicture(
-                          backgroundImage: (Constant.getUser.profile != null)
-                              ? CachedNetworkImageProvider(
-                                  Constant.getUser.profile.toString(),
-                                )
-                              : AssetImage('assets/images/user.png')
-                                  as ImageProvider,
-                        ),
-                      ),
-                    )
+                    SizedBox(width: 25.0),
                   ],
                 ),
         ),

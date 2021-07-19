@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
         shadowColor: Color(0xFFFFCA28),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           selectedItemColor: Color(0xFFFFA000),
+          unselectedItemColor: Colors.blueGrey[700],
           showUnselectedLabels: false,
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
         ),

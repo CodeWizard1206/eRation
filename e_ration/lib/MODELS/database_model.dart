@@ -351,7 +351,7 @@ class DatabaseManager {
             .collection('productDatabase')
             .doc(i.product.uid)
             .update({
-          'stocks': (_data.get('stocks') - 1),
+          'stocks': (_data.get('stocks') - i.product.qty),
         });
       }
 
@@ -432,6 +432,16 @@ class DatabaseManager {
         .map(
           (snap) => snap.docs.map((doc) => ProductModel.fromDoc(doc)).toList(),
         );
+
+    return _data;
+  }
+
+  Stream<int> getStockUpdate(String pid) {
+    var _data = _firestore
+        .collection(_productDB)
+        .doc(pid)
+        .snapshots()
+        .map((event) => event.get('stocks') as int);
 
     return _data;
   }

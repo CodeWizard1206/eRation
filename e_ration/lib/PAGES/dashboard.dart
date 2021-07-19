@@ -1,7 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_ration/COMPONENTS/circle_picture.dart';
+import 'package:e_ration/MODELS/constants.dart';
 import 'package:e_ration/PAGES/home.dart';
 import 'package:e_ration/COMPONENTS/app_bar.dart';
 import 'package:e_ration/PAGES/my_cart.dart';
 import 'package:e_ration/PAGES/my_orders.dart';
+import 'package:e_ration/PAGES/profile_view.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -27,6 +31,7 @@ class _DashboardState extends State<Dashboard> {
       ),
       MyCart(),
       MyOrders(),
+      ProfileView(),
     ];
     super.initState();
   }
@@ -81,6 +86,17 @@ class _DashboardState extends State<Dashboard> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.history_rounded),
                 label: 'My Orders',
+              ),
+              BottomNavigationBarItem(
+                icon: CirclePicture(
+                  isProfile: true,
+                  backgroundImage: (Constant.getUser.profile != null)
+                      ? CachedNetworkImageProvider(
+                          Constant.getUser.profile.toString(),
+                        )
+                      : AssetImage('assets/images/user.png') as ImageProvider,
+                ),
+                label: 'Profile',
               ),
             ],
           ),

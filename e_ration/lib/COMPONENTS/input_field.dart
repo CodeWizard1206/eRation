@@ -71,6 +71,7 @@ class InputField extends StatefulWidget {
   final bool iconPlaceholder;
   final IconData? icon;
   final Function(String)? onFieldSubmitted;
+  final Function(String)? onChange;
 
   InputField({
     Key? key,
@@ -87,6 +88,7 @@ class InputField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.textCapitalization = TextCapitalization.none,
     this.onFieldSubmitted,
+    this.onChange,
   }) : super(key: key);
 
   @override
@@ -117,6 +119,7 @@ class _InputFieldState extends State<InputField> {
         textCapitalization: this.widget.textCapitalization,
         enabled: this.widget.dateToggle ? false : this.widget.enabled,
         onFieldSubmitted: this.widget.onFieldSubmitted,
+        onChanged: this.widget.onChange,
         decoration: InputDecoration(
           hintText: this.widget.title,
           labelText: this.widget.title,
