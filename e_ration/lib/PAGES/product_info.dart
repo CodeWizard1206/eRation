@@ -296,7 +296,6 @@ class _ProductInfoState extends State<ProductInfo> {
                                   TextButton(
                                     onPressed: () async {
                                       if (_controller.text.isNotEmpty) {
-                                        print(widget.product.uid);
                                         QueryModel query = QueryModel(
                                           question: _controller.text,
                                           askedBy: Constant.getUser.name,

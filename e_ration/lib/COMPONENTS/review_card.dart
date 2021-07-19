@@ -1,7 +1,4 @@
-import 'package:e_ration/MODELS/database_model.dart';
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:flutter_icons/flutter_icons.dart';
 
 class ReviewCard extends StatefulWidget {
   ReviewCard({Key? key}) : super(key: key);
@@ -11,7 +8,7 @@ class ReviewCard extends StatefulWidget {
 }
 
 class _ReviewCardState extends State<ReviewCard> {
-  List<int> _rateStar = [1, 2, 3, 4, 5];
+  // List<int> _rateStar = [1, 2, 3, 4, 5];
   int rating = 3;
   @override
   Widget build(BuildContext context) {

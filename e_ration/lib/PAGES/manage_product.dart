@@ -105,8 +105,6 @@ class _ManageProductState extends State<ManageProduct> {
                   _data = _data
                       .where((element) => element.sellerName == _filteredString)
                       .toList();
-
-                  print(_filtered);
                 }
                 if (_data.length > 0) {
                   return ListView(

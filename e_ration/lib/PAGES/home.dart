@@ -5,6 +5,7 @@ import 'package:e_ration/MODELS/category_model.dart';
 import 'package:e_ration/MODELS/database_model.dart';
 import 'package:e_ration/PAGES/manage_product.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -124,10 +125,6 @@ class Home extends StatelessWidget {
               if (snapshot.connectionState != ConnectionState.none) {
                 if (snapshot.hasData) {
                   if (snapshot.data!.length > 0) {
-                    snapshot.data!.forEach((element) {
-                      print(element);
-                    });
-
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: snapshot.data!
