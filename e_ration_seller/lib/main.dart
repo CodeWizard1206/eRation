@@ -35,17 +35,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'eRation Seller',
       theme: ThemeData(
-        primaryColorLight: Color(0xFFFFCA28),
-        primaryColorDark: Color(0xFFFFA000),
-        // scaffoldBackgroundColor: Color(0xFFFFA000),
+        primaryColorLight: Color(0xFF81664B),
+        primaryColorDark: Color(0xFF5D3917),
+        // scaffoldBackgroundColor: Color(0xFF5D3917),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Color(0xFFFFA000),
+          backgroundColor: Color(0xFF5D3917),
           foregroundColor: Colors.white,
-          splashColor: Color(0xFFFFCA28),
+          splashColor: Color(0xFF81664B),
         ),
         fontFamily: 'Product Sans',
         primarySwatch: Colors.grey,
-        shadowColor: Color(0xFFFFCA28),
+        shadowColor: Color(0xFF81664B),
       ),
       routes: {
         '/': (context) => HomeRoute(),

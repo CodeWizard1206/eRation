@@ -107,8 +107,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             Builder(
-                              builder: (context) => FloatingActionButton(
-                                tooltip: "Login",
+                              builder: (context) =>
+                                  FloatingActionButton.extended(
+                                label: Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    // color: Theme.of(context).primaryColorDark,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
                                 onPressed: () async {
                                   if (_userFocus.hasPrimaryFocus)
                                     _userFocus.unfocus();
@@ -146,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     }
                                   }
                                 },
-                                child: Icon(
+                                icon: Icon(
                                   Icons.keyboard_arrow_right_sharp,
                                   size: 38,
                                 ),

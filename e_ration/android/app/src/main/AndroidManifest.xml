@@ -2,7 +2,7 @@
     package="com.codewizard.e_ration">
    <application
         android:label="eRation"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher_round">
         <activity
           android:name="com.yalantis.ucrop.UCropActivity"
           android:screenOrientation="portrait"
